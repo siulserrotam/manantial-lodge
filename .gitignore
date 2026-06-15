@@ -26,4 +26,5 @@ Thumbs.db
 
 # Dependencies/build folders
 node_modules/
+.next/
 .vercel/

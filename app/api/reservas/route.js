@@ -1,12 +1,7 @@
-import { supabaseRequest } from "./_supabase.js";
+import { json, supabaseRequest } from "../../_lib/supabase";
 
-export default async function handler(request, response) {
-  if (request.method !== "POST") {
-    response.status(405).json({ ok: false, message: "Metodo no permitido. Usa POST." });
-    return;
-  }
-
-  const body = typeof request.body === "string" ? JSON.parse(request.body || "{}") : request.body || {};
+export async function POST(request) {
+  const body = await request.json().catch(() => ({}));
   const payload = {
     alojamiento_nombre: String(body.cabinName || body.alojamiento_nombre || "").trim(),
     nombre: String(body.name || body.nombre || "").trim(),
@@ -19,8 +14,7 @@ export default async function handler(request, response) {
   };
 
   if (!payload.alojamiento_nombre || !payload.nombre || !payload.identificacion || !payload.fecha_ingreso || !payload.fecha_salida) {
-    response.status(400).json({ ok: false, message: "Faltan datos obligatorios de la reserva." });
-    return;
+    return json({ ok: false, message: "Faltan datos obligatorios de la reserva." }, 400);
   }
 
   try {
@@ -28,8 +22,12 @@ export default async function handler(request, response) {
       method: "POST",
       body: JSON.stringify(payload)
     });
-    response.status(200).json({ ok: true, message: "Reserva registrada." });
+    return json({ ok: true, message: "Reserva registrada." });
   } catch (error) {
-    response.status(500).json({ ok: false, message: error.message });
+    return json({ ok: false, message: error.message }, 500);
   }
+}
+
+export function GET() {
+  return json({ ok: false, message: "Metodo no permitido. Usa POST." }, 405);
 }

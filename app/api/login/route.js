@@ -1,12 +1,7 @@
-import { hasSupabaseConfig, supabaseRequest } from "./_supabase.js";
+import { hasSupabaseConfig, json, supabaseRequest } from "../../_lib/supabase";
 
-export default async function handler(request, response) {
-  if (request.method !== "POST") {
-    response.status(405).json({ ok: false, message: "Metodo no permitido. Usa POST." });
-    return;
-  }
-
-  const body = typeof request.body === "string" ? JSON.parse(request.body || "{}") : request.body || {};
+export async function POST(request) {
+  const body = await request.json().catch(() => ({}));
   const usuario = String(body.usuario || "").trim();
   const clave = String(body.clave || "");
 
@@ -16,11 +11,10 @@ export default async function handler(request, response) {
       const funcionario = rows[0];
 
       if (!funcionario || funcionario.clave !== clave) {
-        response.status(401).json({ ok: false, message: "Usuario o clave incorrectos." });
-        return;
+        return json({ ok: false, message: "Usuario o clave incorrectos." }, 401);
       }
 
-      response.status(200).json({
+      return json({
         ok: true,
         funcionario: {
           nombre: funcionario.nombre,
@@ -28,10 +22,8 @@ export default async function handler(request, response) {
           rol: funcionario.rol
         }
       });
-      return;
     } catch (error) {
-      response.status(500).json({ ok: false, message: error.message });
-      return;
+      return json({ ok: false, message: error.message }, 500);
     }
   }
 
@@ -39,19 +31,14 @@ export default async function handler(request, response) {
   const adminPassword = process.env.ADMIN_PASSWORD;
 
   if (!adminUser || !adminPassword) {
-    response.status(500).json({
-      ok: false,
-      message: "Faltan variables ADMIN_USER y ADMIN_PASSWORD en Vercel."
-    });
-    return;
+    return json({ ok: false, message: "Faltan variables ADMIN_USER y ADMIN_PASSWORD en Vercel." }, 500);
   }
 
   if (usuario !== adminUser || clave !== adminPassword) {
-    response.status(401).json({ ok: false, message: "Usuario o clave incorrectos." });
-    return;
+    return json({ ok: false, message: "Usuario o clave incorrectos." }, 401);
   }
 
-  response.status(200).json({
+  return json({
     ok: true,
     funcionario: {
       nombre: "Administrador",
@@ -59,4 +46,8 @@ export default async function handler(request, response) {
       rol: "administrador"
     }
   });
+}
+
+export function GET() {
+  return json({ ok: false, message: "Metodo no permitido. Usa POST." }, 405);
 }

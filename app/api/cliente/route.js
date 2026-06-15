@@ -1,4 +1,4 @@
-import { supabaseRequest } from "./_supabase.js";
+import { json, supabaseRequest } from "../../_lib/supabase";
 
 const defaultProducts = [
   { id: "sancocho-campestre", name: "Sancocho campestre", type: "restaurante", price: 28000, image: "" },
@@ -15,24 +15,19 @@ function productImage(product) {
   return "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80";
 }
 
-export default async function handler(request, response) {
-  if (request.method !== "GET") {
-    response.status(405).json({ ok: false, message: "Metodo no permitido. Usa GET." });
-    return;
-  }
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const token = String(searchParams.get("visita") || "").trim();
 
-  const token = String(request.query?.visita || "").trim();
   if (!token) {
-    response.status(400).json({ ok: false, message: "Falta token de visita." });
-    return;
+    return json({ ok: false, message: "Falta token de visita." }, 400);
   }
 
   try {
     const clients = await supabaseRequest(`clientes?qr_token=eq.${encodeURIComponent(token)}&estado=eq.abierta&select=*`);
     const cliente = clients[0];
     if (!cliente) {
-      response.status(404).json({ ok: false, message: "QR no disponible." });
-      return;
+      return json({ ok: false, message: "QR no disponible." }, 404);
     }
 
     const products = await supabaseRequest("productos?activo=eq.true&select=id,nombre,categoria,precio,imagen,cantidad_inventario,inventario(id,nombre,cantidad,unidad)");
@@ -49,7 +44,7 @@ export default async function handler(request, response) {
         image: productImage(product)
       }));
 
-    response.status(200).json({
+    return json({
       ok: true,
       account: {
         id: cliente.id,
@@ -61,6 +56,6 @@ export default async function handler(request, response) {
       products: availableProducts.length ? availableProducts : defaultProducts
     });
   } catch (error) {
-    response.status(500).json({ ok: false, message: error.message });
+    return json({ ok: false, message: error.message }, 500);
   }
 }
