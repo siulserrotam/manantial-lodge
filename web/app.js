@@ -662,8 +662,35 @@ function updateServiceFields() {
 }
 
 function syncClientRequests() {
-  clientRequests = load(storage.requests, []);
-  renderClientRequests();
+  fetch("/api/solicitudes")
+    .then((response) => response.json())
+    .then((result) => {
+      if (!result.ok) throw new Error(result.message || "No fue posible cargar solicitudes.");
+      const cloudRequests = (result.solicitudes || []).map((request) => ({
+        id: request.id,
+        accountId: request.cliente_id,
+        visitToken: request.qr_token,
+        customer: request.cliente_nombre,
+        type: request.tipo,
+        target: request.destino,
+        detail: request.detalle,
+        total: Number(request.total || 0),
+        items: request.items || [],
+        status: request.estado,
+        createdAt: request.creado_en
+      }));
+      const localPending = load(storage.requests, []).filter((request) => request.status !== "atendido");
+      const cloudIds = new Set(cloudRequests.map((request) => String(request.id)));
+      clientRequests = [
+        ...cloudRequests,
+        ...localPending.filter((request) => !cloudIds.has(String(request.id)))
+      ];
+      renderClientRequests();
+    })
+    .catch(() => {
+      clientRequests = load(storage.requests, []);
+      renderClientRequests();
+    });
 }
 
 function renderAdmin() {
@@ -871,7 +898,7 @@ adminView.addEventListener("click", async (event) => {
       return;
     }
     if (cabin) cabin.status = "Ocupada";
-    openAccounts.push({
+    const account = {
       id: Date.now(),
       customer: name,
       idNumber,
@@ -882,7 +909,13 @@ adminView.addEventListener("click", async (event) => {
       cabinName: cabin ? cabin.name : "",
       qrToken: `v-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       items: []
-    });
+    };
+    openAccounts.push(account);
+    fetch("/api/clientes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(account)
+    }).catch(() => {});
     ["#client-name", "#client-id-number", "#client-phone", "#client-email"].forEach((selector) => {
       document.querySelector(selector).value = "";
     });
@@ -930,7 +963,10 @@ adminView.addEventListener("click", async (event) => {
 
   if (target.matches("[data-charge-request-id]")) {
     const request = clientRequests.find((item) => item.id === Number(target.dataset.chargeRequestId));
-    const account = request ? openAccounts.find((item) => item.id === Number(request.accountId)) : null;
+    const account = request
+      ? openAccounts.find((item) => String(item.id) === String(request.accountId)) ||
+        openAccounts.find((item) => item.qrToken && item.qrToken === request.visitToken)
+      : null;
     if (!request || !account) {
       alert("No se encontro la cuenta abierta de esta solicitud.");
       return;

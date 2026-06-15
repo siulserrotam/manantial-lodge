@@ -26,8 +26,7 @@ const defaultProducts = [
   { id: 1, type: "restaurante", name: "Sancocho campestre", price: 28000, inventoryId: 1, stockQty: 1, image: "" },
   { id: 2, type: "restaurante", name: "Trucha con patacon", price: 32000, inventoryId: 2, stockQty: 1, image: "" },
   { id: 3, type: "bar", name: "Limonada natural", price: 8000, inventoryId: 3, stockQty: 1, image: "" },
-  { id: 4, type: "bar", name: "Cerveza nacional", price: 7000, inventoryId: 4, stockQty: 1, image: "" },
-  { id: 5, type: "paquete", name: "Paquete minibar cabana", price: 35000, inventoryId: 4, stockQty: 2, image: "" }
+  { id: 4, type: "bar", name: "Cerveza nacional", price: 7000, inventoryId: 4, stockQty: 1, image: "" }
 ];
 
 const defaultInventory = [
@@ -39,14 +38,13 @@ const defaultInventory = [
 
 const params = new URLSearchParams(window.location.search);
 const token = params.get("visita") || "";
-const accounts = load(keys.accounts, []);
-const account = accounts.find((item) => (item.qrToken || `v-${item.id}`) === token);
-const products = load(keys.products, defaultProducts);
-const inventory = load(keys.inventory, defaultInventory);
-const cabins = load(keys.cabins, []);
+let account = null;
+let products = [];
 let cart = [];
 
 function inventoryAvailable(product) {
+  if (!product.inventoryId) return product.active !== false;
+  const inventory = load(keys.inventory, defaultInventory);
   const item = inventory.find((stock) => stock.id === Number(product.inventoryId));
   return product.active !== false && Boolean(item && item.quantity >= Number(product.stockQty || 1));
 }
@@ -57,23 +55,8 @@ function showMessage(text, type = "") {
   message.className = `message ${type}`.trim();
 }
 
-function renderMenu() {
-  const container = document.querySelector("#client-menu");
-  const available = products.filter(inventoryAvailable);
-
-  container.innerHTML = available.map((product) => `
-    <article class="client-product">
-      <img src="${product.image || defaultProductImage(product)}" alt="Imagen de ${product.name}">
-      <div>
-        <strong>${product.name}</strong>
-        <span>${product.type === "bar" ? "Bar" : product.type === "paquete" ? "Paquete" : "Restaurante"} - ${formatMoney(product.price)}</span>
-      </div>
-      <button type="button" data-client-product="${product.id}">Agregar</button>
-    </article>
-  `).join("") || '<p class="muted">No hay productos disponibles en este momento.</p>';
-}
-
 function defaultProductImage(product) {
+  if (product.image) return product.image;
   if (product.type === "bar") {
     return "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=500&q=80";
   }
@@ -81,6 +64,22 @@ function defaultProductImage(product) {
     return "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?auto=format&fit=crop&w=500&q=80";
   }
   return "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80";
+}
+
+function renderMenu() {
+  const container = document.querySelector("#client-menu");
+  const available = products.filter(inventoryAvailable);
+
+  container.innerHTML = available.map((product) => `
+    <article class="client-product">
+      <img src="${defaultProductImage(product)}" alt="Imagen de ${product.name}">
+      <div>
+        <strong>${product.name}</strong>
+        <span>${product.type === "bar" ? "Bar" : product.type === "paquete" ? "Paquete" : "Restaurante"} - ${formatMoney(product.price)}</span>
+      </div>
+      <button type="button" data-client-product="${product.id}">Agregar</button>
+    </article>
+  `).join("") || '<p class="muted">No hay productos disponibles en este momento.</p>';
 }
 
 function renderCart() {
@@ -95,35 +94,78 @@ function renderCart() {
     `Total: ${formatMoney(cart.reduce((sum, item) => sum + item.price, 0))}`;
 }
 
-function pushRequest(request) {
-  const requests = load(keys.requests, []);
-  requests.push({
-    id: Date.now(),
+async function pushRequest(request) {
+  const payload = {
     accountId: account.id,
+    visitToken: account.qrToken || token,
     customer: account.customer,
     status: "pendiente",
     createdAt: new Date().toISOString(),
     ...request
-  });
-  save(keys.requests, requests);
+  };
+
+  try {
+    const response = await fetch("/api/solicitudes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.message || "No fue posible enviar la solicitud.");
+  } catch (error) {
+    const requests = load(keys.requests, []);
+    requests.push({ id: Date.now(), ...payload });
+    save(keys.requests, requests);
+  }
 }
 
-if (!account) {
-  document.querySelector("#client-invalid").hidden = false;
-} else {
+function showValidClient() {
   document.querySelector("#client-valid").hidden = false;
-  const cabin = cabins.find((item) => item.id === account.cabinId);
+  document.querySelector("#client-invalid").hidden = true;
   document.querySelector("#client-summary").textContent =
-    `${account.customer} - ${account.role === "huesped" ? account.cabinName : "Pasadia"}${cabin && cabin.amenities ? ` - ${cabin.amenities}` : " - Wifi y parqueadero disponibles"}`;
+    `${account.customer} - ${account.role === "huesped" ? account.cabinName : "Pasadia"}${account.cabinName ? "" : " - Wifi y parqueadero disponibles"}`;
   document.querySelector("#client-target").value = account.cabinName || "";
   renderMenu();
   renderCart();
 }
 
-document.addEventListener("click", (event) => {
+function showInvalidClient(message = "La visita pudo finalizar o el codigo no corresponde a una cuenta abierta.") {
+  document.querySelector("#client-valid").hidden = true;
+  document.querySelector("#client-invalid").hidden = false;
+  document.querySelector("#client-summary").textContent = "QR no disponible";
+  document.querySelector("#client-invalid .muted").textContent = message;
+}
+
+async function loadClientData() {
+  try {
+    const response = await fetch(`/api/cliente?visita=${encodeURIComponent(token)}`);
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.message || "QR no disponible.");
+    account = result.account;
+    products = result.products || [];
+    showValidClient();
+  } catch (error) {
+    const accounts = load(keys.accounts, []);
+    account = accounts.find((item) => (item.qrToken || `v-${item.id}`) === token);
+    products = load(keys.products, defaultProducts);
+    if (account) {
+      showValidClient();
+    } else {
+      showInvalidClient(error.message);
+    }
+  }
+}
+
+if (!token) {
+  showInvalidClient("Falta el codigo de visita.");
+} else {
+  loadClientData();
+}
+
+document.addEventListener("click", async (event) => {
   const productButton = event.target.closest("[data-client-product]");
   if (productButton) {
-    const product = products.find((item) => item.id === Number(productButton.dataset.clientProduct));
+    const product = products.find((item) => String(item.id) === String(productButton.dataset.clientProduct));
     if (product) {
       cart.push({ id: product.id, name: product.name, price: product.price });
       renderCart();
@@ -144,7 +186,7 @@ document.addEventListener("click", (event) => {
       return;
     }
     const target = document.querySelector("#client-target").value.trim();
-    pushRequest({
+    await pushRequest({
       type: "order",
       target,
       detail: cart.map((item) => item.name).join(", "),
@@ -163,7 +205,7 @@ document.addEventListener("click", (event) => {
       showMessage("Escribe la cancion o pedido especial.", "error");
       return;
     }
-    pushRequest({
+    await pushRequest({
       type: "special",
       target: document.querySelector("#client-target").value.trim(),
       detail: message,

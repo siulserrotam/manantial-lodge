@@ -101,6 +101,38 @@ create table if not exists public.cargos_cuenta (
   creado_en timestamptz not null default now()
 );
 
+insert into public.inventario (nombre, categoria, unidad, cantidad, valor_compra)
+values
+  ('Carne para sancocho', 'comida', 'porcion', 20, 0),
+  ('Trucha', 'comida', 'unidad', 12, 0),
+  ('Limonada', 'bebida', 'vaso', 30, 0),
+  ('Cerveza nacional', 'bebida', 'unidad', 48, 0)
+on conflict do nothing;
+
+insert into public.productos (nombre, categoria, precio, inventario_id, cantidad_inventario, imagen, activo)
+select 'Sancocho campestre', 'restaurante', 28000, id, 1, '', true
+from public.inventario
+where nombre = 'Carne para sancocho'
+and not exists (select 1 from public.productos where nombre = 'Sancocho campestre');
+
+insert into public.productos (nombre, categoria, precio, inventario_id, cantidad_inventario, imagen, activo)
+select 'Trucha con patacon', 'restaurante', 32000, id, 1, '', true
+from public.inventario
+where nombre = 'Trucha'
+and not exists (select 1 from public.productos where nombre = 'Trucha con patacon');
+
+insert into public.productos (nombre, categoria, precio, inventario_id, cantidad_inventario, imagen, activo)
+select 'Limonada natural', 'bar', 8000, id, 1, '', true
+from public.inventario
+where nombre = 'Limonada'
+and not exists (select 1 from public.productos where nombre = 'Limonada natural');
+
+insert into public.productos (nombre, categoria, precio, inventario_id, cantidad_inventario, imagen, activo)
+select 'Cerveza nacional', 'bar', 7000, id, 1, '', true
+from public.inventario
+where nombre = 'Cerveza nacional'
+and not exists (select 1 from public.productos where nombre = 'Cerveza nacional');
+
 insert into public.alojamientos (nombre, tipo, precio, estado, descripcion, activos, despensa)
 values
   ('Cabana Tipi 101', 'Cabana Tipi', 160000, 'Disponible', 'Cabana tipi con nevera, desayuno incluido, wifi y parqueadero.', 'Nevera minibar, cama doble, ventilador, mesa auxiliar, lenceria', 'Agua, gaseosa, cerveza, paquetes, snacks'),
