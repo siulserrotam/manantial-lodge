@@ -11,6 +11,28 @@ export default async function handler(request, response) {
     return;
   }
 
+  if (request.method === "PATCH") {
+    const body = typeof request.body === "string" ? JSON.parse(request.body || "{}") : request.body || {};
+    const id = String(body.id || "").trim();
+    const estado = String(body.estado || "atendido").trim();
+
+    if (!id) {
+      response.status(400).json({ ok: false, message: "Falta el ID de la solicitud." });
+      return;
+    }
+
+    try {
+      await supabaseRequest(`solicitudes_qr?id=eq.${encodeURIComponent(id)}`, {
+        method: "PATCH",
+        body: JSON.stringify({ estado })
+      });
+      response.status(200).json({ ok: true, message: "Solicitud actualizada." });
+    } catch (error) {
+      response.status(500).json({ ok: false, message: error.message });
+    }
+    return;
+  }
+
   if (request.method !== "POST") {
     response.status(405).json({ ok: false, message: "Metodo no permitido." });
     return;

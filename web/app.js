@@ -217,7 +217,10 @@ function normalizeState() {
 }
 
 function clientVisitUrl(account) {
-  return `${window.location.origin}/cliente.html?visita=${encodeURIComponent(account.qrToken || `v-${account.id}`)}`;
+  const publicOrigin = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? "https://manantiallodge.com"
+    : window.location.origin;
+  return `${publicOrigin}/cliente.html?visita=${encodeURIComponent(account.qrToken || `v-${account.id}`)}`;
 }
 
 function qrImageUrl(account) {
@@ -570,8 +573,9 @@ function renderClientRequests() {
         <small>${request.total ? formatMoney(request.total) : "Sin valor asignado"}</small>
       </span>
       <span class="client-actions">
-        <button type="button" data-charge-request-id="${request.id}">Cargar a cuenta</button>
-        <button type="button" class="secondary-button" data-mark-request-done="${request.id}">Atendido</button>
+        ${request.type === "order"
+          ? `<button type="button" data-charge-request-id="${request.id}">Cargar a cuenta</button>`
+          : `<button type="button" class="secondary-button" data-mark-request-done="${request.id}">Atendido</button>`}
       </span>
     </p>
   `).join("") || '<p class="muted">Sin solicitudes por QR.</p>';
@@ -691,6 +695,14 @@ function syncClientRequests() {
       clientRequests = load(storage.requests, []);
       renderClientRequests();
     });
+}
+
+function markCloudRequestDone(id) {
+  return fetch("/api/solicitudes", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, estado: "atendido" })
+  }).catch(() => {});
 }
 
 function renderAdmin() {
@@ -952,9 +964,10 @@ adminView.addEventListener("click", async (event) => {
   }
 
   if (target.matches("[data-mark-request-done]")) {
-    const request = clientRequests.find((item) => item.id === Number(target.dataset.markRequestDone));
+    const request = clientRequests.find((item) => String(item.id) === String(target.dataset.markRequestDone));
     if (request) {
       request.status = "atendido";
+      markCloudRequestDone(request.id);
       persistAll();
       renderClientRequests();
     }
@@ -962,7 +975,7 @@ adminView.addEventListener("click", async (event) => {
   }
 
   if (target.matches("[data-charge-request-id]")) {
-    const request = clientRequests.find((item) => item.id === Number(target.dataset.chargeRequestId));
+    const request = clientRequests.find((item) => String(item.id) === String(target.dataset.chargeRequestId));
     const account = request
       ? openAccounts.find((item) => String(item.id) === String(request.accountId)) ||
         openAccounts.find((item) => item.qrToken && item.qrToken === request.visitToken)
@@ -985,6 +998,7 @@ adminView.addEventListener("click", async (event) => {
       });
     }
     request.status = "atendido";
+    markCloudRequestDone(request.id);
     persistAll();
     renderAdmin();
     alert("Pedido QR cargado a la cuenta del cliente.");
