@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Funcionarios - Finca Campestre</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main id="login-view" class="page-shell">
+      <section class="hero" aria-labelledby="titulo-admin">
+        <div class="hero-content">
+          <p class="eyebrow">Administracion interna</p>
+          <h1 id="titulo-admin">Funcionarios</h1>
+          <p class="intro">Acceso reservado para administrar restaurante, pasadia de piscina y hospedaje.</p>
+        </div>
+      </section>
+
+      <aside class="login-panel" aria-labelledby="login-title">
+        <div>
+          <p class="panel-kicker">Ingreso seguro</p>
+          <h2 id="login-title">Login administrativo</h2>
+        </div>
+
+        <form id="login-form" autocomplete="on">
+          <label for="usuario">Usuario</label>
+          <input id="usuario" name="usuario" type="text" required autocomplete="username" placeholder="admin">
+
+          <label for="clave">Clave</label>
+          <input id="clave" name="clave" type="password" required autocomplete="current-password" placeholder="Clave">
+
+          <button type="submit">Ingresar</button>
+          <p id="login-message" class="message" role="status" aria-live="polite"></p>
+        </form>
+      </aside>
+    </main>
+
+    <main id="admin-view" class="admin-shell" hidden>
+      <header class="admin-header">
+        <div>
+          <p class="panel-kicker">Campestre finca el Manantial</p>
+          <h1>Panel administrativo</h1>
+          <p id="session-user" class="muted"></p>
+        </div>
+        <button id="logout-button" class="secondary-button" type="button">Salir</button>
+      </header>
+
+      <nav class="admin-tabs" aria-label="Navegacion del panel">
+        <button class="tab-button active" type="button" data-tab-button="restaurante">Restaurante y Bar</button>
+        <button class="tab-button" type="button" data-tab-button="clientes">Clientes</button>
+        <button class="tab-button" type="button" data-tab-button="piscina">Piscina</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="alojamientos">Alojamientos</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="bodega">Bodega y Carta</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="inventario">Inventario</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="empleados">Empleados</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="gastos">Gastos</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="recibos">Recibos</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="cierre">Cierres</button>
+        <button class="tab-button admin-only" type="button" data-tab-button="facturacion">Facturacion Electronica</button>
+      </nav>
+
+      <section class="admin-grid" aria-label="Modulos administrativos">
+        <section class="admin-section tab-panel" data-tab-panel="restaurante" aria-labelledby="restaurante-title">
+          <div class="section-title">
+            <div>
+              <p class="panel-kicker">Restaurante y bar</p>
+              <h2 id="restaurante-title">Carta, mesas y cuentas</h2>
+            </div>
+          </div>
+
+          <div class="order-layout">
+            <div>
+              <h3>Restaurante</h3>
+              <div id="restaurant-products" class="product-list"></div>
+
+              <h3>Bar</h3>
+              <div id="bar-products" class="product-list"></div>
+
+              <h3>Paquetes</h3>
+              <div id="package-products" class="product-list"></div>
+            </div>
+
+            <div>
+              <div class="order-box">
+                <h3>Cuenta abierta</h3>
+                <label for="open-account">Cliente o visita</label>
+                <select id="open-account"></select>
+                <label for="payment-method">Forma de pago</label>
+                <select id="payment-method">
+                  <option value="efectivo">Efectivo</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="tarjeta">Tarjeta</option>
+                  <option value="mixto">Mixto</option>
+                </select>
+                <p id="account-total" class="summary-total">Total cuenta: $0</p>
+                <button id="close-account" type="button">Finalizar visita y cobrar</button>
+              </div>
+
+              <div class="section-title compact-title">
+                <h3>Mesas</h3>
+                <button id="add-table" class="secondary-button" type="button">Agregar mesa</button>
+              </div>
+              <div id="tables" class="table-list"></div>
+
+              <div class="order-box">
+                <h3>Pedido actual</h3>
+                <p id="selected-table" class="muted">Selecciona una mesa.</p>
+                <ul id="order-items"></ul>
+                <strong id="order-total">$0</strong>
+                <button id="charge-order" type="button">Cargar pedido a cuenta</button>
+              </div>
+
+              <div class="order-box">
+                <h3>Pedidos por QR</h3>
+                <div id="client-requests" class="history-list"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-section tab-panel" data-tab-panel="clientes" aria-labelledby="clientes-title" hidden>
+          <p class="panel-kicker">Clientes</p>
+          <h2 id="clientes-title">Visitas abiertas</h2>
+          <label for="client-name">Nombre del responsable</label>
+          <input id="client-name" type="text" placeholder="Cliente o responsable">
+          <label for="client-id-number">Identificacion</label>
+          <input id="client-id-number" type="text" placeholder="Numero de documento">
+          <label for="client-phone">Celular</label>
+          <input id="client-phone" type="tel" placeholder="Celular">
+          <label for="client-email">Email</label>
+          <input id="client-email" type="email" placeholder="correo@cliente.com">
+          <label for="client-role">Tipo de cliente</label>
+          <select id="client-role">
+            <option value="pasadia">Pasadia</option>
+            <option value="huesped">Huesped</option>
+          </select>
+          <label for="client-cabin">Alojamiento</label>
+          <select id="client-cabin"></select>
+          <button id="open-client" type="button">Abrir cuenta</button>
+          <div id="open-clients" class="summary-list"></div>
+          <div id="client-qr-panel" class="qr-panel" hidden></div>
+        </section>
+
+        <section class="admin-section tab-panel" data-tab-panel="piscina" aria-labelledby="piscina-title" hidden>
+          <p class="panel-kicker">Piscina</p>
+          <h2 id="piscina-title">Ingreso piscina</h2>
+          <label for="pool-account">Cuenta cliente</label>
+          <select id="pool-account"></select>
+          <label for="pool-people">Personas que ingresan</label>
+          <input id="pool-people" type="number" min="1" value="1">
+          <label for="pool-price">Valor por persona</label>
+          <input id="pool-price" type="number" min="0" step="1000" value="15000">
+          <button id="charge-pool" type="button">Cargar a cuenta</button>
+          <p id="pool-total" class="summary-total">Total: $15.000</p>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="alojamientos" aria-labelledby="alojamientos-title" hidden>
+          <p class="panel-kicker">Alojamientos</p>
+          <h2 id="alojamientos-title">Alojamientos, activos y consumos</h2>
+          <div id="cabins" class="cabin-list"></div>
+          <div id="reservation-list" class="summary-list"></div>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="bodega" aria-labelledby="bodega-title" hidden>
+          <p class="panel-kicker">Administrador</p>
+          <h2 id="bodega-title">Bodega y carta</h2>
+          <label for="new-product-inventory">Insumo que descuenta</label>
+          <select id="new-product-inventory"></select>
+          <label for="new-product-category">Area de venta</label>
+          <select id="new-product-category">
+            <option value="restaurante">Restaurante</option>
+            <option value="bar">Bar</option>
+            <option value="paquete">Paquete</option>
+          </select>
+          <label for="new-product-name">Nombre del producto en carta</label>
+          <input id="new-product-name" type="text" placeholder="Nombre del producto">
+          <label for="new-product-price">Precio de venta</label>
+          <input id="new-product-price" type="number" min="0" step="500" value="10000">
+          <label for="new-product-stock-qty">Cantidad que descuenta del insumo</label>
+          <input id="new-product-stock-qty" type="number" min="1" step="1" value="1">
+          <label for="new-product-image">Imagen del producto</label>
+          <input id="new-product-image" type="file" accept="image/*">
+          <button id="add-product" type="button">Agregar a carta</button>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="inventario" aria-labelledby="stock-title" hidden>
+          <div class="section-title">
+            <div>
+              <p class="panel-kicker">Administrador</p>
+              <h2 id="stock-title">Inventario comidas y bebidas</h2>
+            </div>
+          </div>
+          <div class="inventory-layout">
+            <div>
+              <label for="stock-name">Insumo o producto de bodega</label>
+              <input id="stock-name" type="text" placeholder="Carne, gaseosa, cerveza">
+              <label for="stock-category">Categoria</label>
+              <select id="stock-category">
+                <option value="comida">Comida</option>
+                <option value="bebida">Bebida</option>
+                <option value="insumo">Insumo general</option>
+              </select>
+              <label for="stock-unit">Unidad de medida</label>
+              <input id="stock-unit" type="text" value="unidad">
+              <label for="stock-quantity">Cantidad inicial</label>
+              <input id="stock-quantity" type="number" min="0" step="1" value="1">
+              <label for="stock-purchase-date">Fecha de compra</label>
+              <input id="stock-purchase-date" type="date">
+              <label for="stock-purchase-value">Valor de compra</label>
+              <input id="stock-purchase-value" type="number" min="0" step="500" value="0">
+              <button id="add-stock-item" type="button">Agregar insumo</button>
+            </div>
+            <div>
+              <label for="stock-movement-item">Insumo a modificar</label>
+              <select id="stock-movement-item"></select>
+              <label for="stock-movement-quantity">Cantidad</label>
+              <input id="stock-movement-quantity" type="number" min="1" step="1" value="1">
+              <label for="stock-movement-type">Movimiento</label>
+              <select id="stock-movement-type">
+                <option value="entrada">Agregar cantidad</option>
+                <option value="salida">Descontar cantidad</option>
+              </select>
+              <label for="stock-movement-note">Detalle</label>
+              <input id="stock-movement-note" type="text" placeholder="Compra, ajuste, merma">
+              <button id="register-stock-movement" type="button">Guardar movimiento</button>
+            </div>
+          </div>
+          <div id="inventory-list" class="summary-list"></div>
+          <div id="inventory-history" class="history-list"></div>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="empleados" aria-labelledby="employee-title" hidden>
+          <p class="panel-kicker">Administrador</p>
+          <h2 id="employee-title">Usuarios y empleados</h2>
+          <label for="employee-user">Username del empleado</label>
+          <input id="employee-user" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="ej: juan.perez">
+          <label for="employee-password">Clave de 8 digitos</label>
+          <input id="employee-password" type="password" inputmode="numeric" minlength="8" maxlength="8" pattern="[0-9]{8}" autocomplete="new-password" placeholder="12345678">
+          <label for="employee-id">Identificacion</label>
+          <input id="employee-id" type="text" placeholder="Numero">
+          <label for="employee-name">Nombre completo</label>
+          <input id="employee-name" type="text" placeholder="Nombre del empleado">
+          <label for="employee-phone">Celular</label>
+          <input id="employee-phone" type="tel" placeholder="Celular">
+          <label for="employee-email">Email</label>
+          <input id="employee-email" type="email" placeholder="correo@empleado.com">
+          <label for="employee-role">Rol</label>
+          <select id="employee-role">
+            <option value="operador">Operador</option>
+            <option value="administrador">Administrador</option>
+          </select>
+          <button id="create-employee" type="button">Crear usuario</button>
+          <p id="employee-message" class="message"></p>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="gastos" aria-labelledby="expense-title" hidden>
+          <p class="panel-kicker">Administrador</p>
+          <h2 id="expense-title">Gastos operativos</h2>
+          <label for="expense-category">Categoria</label>
+          <select id="expense-category">
+            <option value="transporte">Transporte</option>
+            <option value="aseo">Aseo</option>
+            <option value="servicios">Servicios</option>
+            <option value="pagos_empleado">Pagos de empleado</option>
+            <option value="insumos">Insumos</option>
+            <option value="otro">Otro</option>
+          </select>
+          <label for="expense-detail">Detalle</label>
+          <input id="expense-detail" type="text" placeholder="Descripcion del gasto">
+          <label for="expense-invoice">Factura o soporte</label>
+          <input id="expense-invoice" type="text" placeholder="Numero de factura, recibo o soporte">
+          <label for="expense-value">Valor</label>
+          <input id="expense-value" type="number" min="0" step="500" value="0">
+          <button id="add-expense" type="button">Registrar gasto</button>
+          <div id="expense-list" class="summary-list"></div>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="recibos" aria-labelledby="recibo-title" hidden>
+          <p class="panel-kicker">Recibos</p>
+          <h2 id="recibo-title">Recibos generados</h2>
+          <div id="receipt" class="receipt-box">
+            <p class="muted">Cuando finalices una visita, aqui se vera el recibo.</p>
+          </div>
+          <div id="receipt-list" class="history-list"></div>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="cierre" aria-labelledby="cierre-title" hidden>
+          <div class="section-title">
+            <div>
+              <p class="panel-kicker">Administrador</p>
+              <h2 id="cierre-title">Cierre diario, mensual e historico</h2>
+            </div>
+            <button id="export-close" class="secondary-button" type="button">Exportar Excel/CSV</button>
+          </div>
+          <div id="sales-summary" class="summary-list"></div>
+        </section>
+
+        <section class="admin-section admin-only tab-panel" data-tab-panel="facturacion" aria-labelledby="factura-title" hidden>
+          <p class="panel-kicker">Factura electronica</p>
+          <h2 id="factura-title">Preparacion DIAN</h2>
+          <p class="muted">Para emitir factura electronica real se requiere resolucion DIAN, certificado digital y proveedor tecnologico o integracion autorizada.</p>
+          <label for="invoice-nit">NIT o cedula</label>
+          <input id="invoice-nit" type="text" placeholder="Documento del cliente">
+          <label for="invoice-email">Correo</label>
+          <input id="invoice-email" type="email" placeholder="correo@cliente.com">
+          <button id="prepare-invoice" type="button">Preparar datos</button>
+          <p id="invoice-message" class="message"></p>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js?v=qrpedidos2"></script>
+  </body>
+</html>

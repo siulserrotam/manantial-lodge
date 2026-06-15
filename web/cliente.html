@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mi visita - Campestre finca el Manantial</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="client-shell">
+      <header class="client-header">
+        <p class="panel-kicker">Campestre finca el Manantial</p>
+        <h1>Mi visita</h1>
+        <p id="client-summary" class="intro">Validando QR...</p>
+      </header>
+
+      <section id="client-valid" class="client-grid" hidden>
+        <section class="client-section">
+          <p class="panel-kicker">Carta</p>
+          <h2>Productos disponibles</h2>
+          <div id="client-menu" class="client-menu"></div>
+        </section>
+
+        <aside class="client-section">
+          <p class="panel-kicker">Pedido</p>
+          <h2>Enviar solicitud</h2>
+          <label for="client-target">Mesa o ubicacion</label>
+          <input id="client-target" type="text" placeholder="Mesa 1, cabana 101, piscina">
+          <div id="client-cart" class="history-list"></div>
+          <p id="client-cart-total" class="summary-total">Total: $0</p>
+          <button id="send-client-order" type="button">Enviar pedido</button>
+
+          <div class="song-box">
+            <p class="panel-kicker">Solicitudes</p>
+            <h3>Canciones o pedidos especiales</h3>
+            <label for="special-message">Mensaje</label>
+            <textarea id="special-message" rows="4" placeholder="Ej: colocar una cancion, traer hielo, pedir algo especial"></textarea>
+            <button id="send-special-request" type="button">Enviar solicitud especial</button>
+          </div>
+
+          <p id="client-message" class="message"></p>
+        </aside>
+      </section>
+
+      <section id="client-invalid" class="client-section" hidden>
+        <h2>QR no disponible</h2>
+        <p class="muted">La visita pudo finalizar o el codigo no corresponde a una cuenta abierta.</p>
+      </section>
+    </main>
+
+    <script src="client.js?v=qrpedidos2"></script>
+  </body>
+</html>

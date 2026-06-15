@@ -1,0 +1,13 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/", "destination": "/web/index.html" },
+    { "source": "/admin.html", "destination": "/web/admin.html" },
+    { "source": "/cliente.html", "destination": "/web/cliente.html" },
+    { "source": "/styles.css", "destination": "/web/styles.css" },
+    { "source": "/app.js", "destination": "/web/app.js" },
+    { "source": "/public.js", "destination": "/web/public.js" },
+    { "source": "/client.js", "destination": "/web/client.js" }
+  ]
+}

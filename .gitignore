@@ -1,0 +1,29 @@
+# Delphi build outputs and local IDE state
+*.exe
+*.dll
+*.rsm
+*.dcu
+*.identcache
+*.local
+*.res
+__history/
+__recovery/
+Win32/
+Win64/
+Debug/
+Release/
+
+# Local databases and private runtime data
+data/*.accdb
+data/*.db
+data/*.ldb
+data/*.laccdb
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Dependencies/build folders
+node_modules/
+.vercel/
