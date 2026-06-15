@@ -1,4 +1,4 @@
-import { json, supabaseRequest } from "../../_lib/supabase";
+import { supabaseRequest } from "./_supabase.js";
 
 const defaultProducts = [
   { id: "sancocho-campestre", name: "Sancocho campestre", type: "restaurante", price: 28000, image: "" },
@@ -15,19 +15,24 @@ function productImage(product) {
   return "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&q=80";
 }
 
-export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const token = String(searchParams.get("visita") || "").trim();
+export default async function handler(request, response) {
+  if (request.method !== "GET") {
+    response.status(405).json({ ok: false, message: "Metodo no permitido. Usa GET." });
+    return;
+  }
 
+  const token = String(request.query?.visita || "").trim();
   if (!token) {
-    return json({ ok: false, message: "Falta token de visita." }, 400);
+    response.status(400).json({ ok: false, message: "Falta token de visita." });
+    return;
   }
 
   try {
     const clients = await supabaseRequest(`clientes?qr_token=eq.${encodeURIComponent(token)}&estado=eq.abierta&select=*`);
     const cliente = clients[0];
     if (!cliente) {
-      return json({ ok: false, message: "QR no disponible." }, 404);
+      response.status(404).json({ ok: false, message: "QR no disponible." });
+      return;
     }
 
     const products = await supabaseRequest("productos?activo=eq.true&select=id,nombre,categoria,precio,imagen,cantidad_inventario,inventario(id,nombre,cantidad,unidad)");
@@ -44,7 +49,7 @@ export async function GET(request) {
         image: productImage(product)
       }));
 
-    return json({
+    response.status(200).json({
       ok: true,
       account: {
         id: cliente.id,
@@ -56,6 +61,6 @@ export async function GET(request) {
       products: availableProducts.length ? availableProducts : defaultProducts
     });
   } catch (error) {
-    return json({ ok: false, message: error.message }, 500);
+    response.status(500).json({ ok: false, message: error.message });
   }
 }

@@ -1,7 +1,12 @@
-import { json, supabaseRequest } from "../../_lib/supabase";
+import { supabaseRequest } from "./_supabase.js";
 
-export async function POST(request) {
-  const body = await request.json().catch(() => ({}));
+export default async function handler(request, response) {
+  if (request.method !== "POST") {
+    response.status(405).json({ ok: false, message: "Metodo no permitido. Usa POST." });
+    return;
+  }
+
+  const body = typeof request.body === "string" ? JSON.parse(request.body || "{}") : request.body || {};
   const payload = {
     qr_token: String(body.qrToken || body.qr_token || "").trim(),
     nombre: String(body.customer || body.nombre || "").trim(),
@@ -14,7 +19,8 @@ export async function POST(request) {
   };
 
   if (!payload.qr_token || !payload.nombre || !payload.identificacion) {
-    return json({ ok: false, message: "Faltan datos obligatorios del cliente." }, 400);
+    response.status(400).json({ ok: false, message: "Faltan datos obligatorios del cliente." });
+    return;
   }
 
   try {
@@ -22,12 +28,8 @@ export async function POST(request) {
       method: "POST",
       body: JSON.stringify(payload)
     });
-    return json({ ok: true, cliente: rows[0] });
+    response.status(200).json({ ok: true, cliente: rows[0] });
   } catch (error) {
-    return json({ ok: false, message: error.message }, 500);
+    response.status(500).json({ ok: false, message: error.message });
   }
-}
-
-export function GET() {
-  return json({ ok: false, message: "Metodo no permitido. Usa POST." }, 405);
 }
