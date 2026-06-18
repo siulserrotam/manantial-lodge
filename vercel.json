@@ -2,9 +2,15 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "studio.manantiallodge.com" }],
+      "destination": "/web/studio.html"
+    },
     { "source": "/", "destination": "/web/index.html" },
     { "source": "/admin.html", "destination": "/web/admin.html" },
     { "source": "/cliente.html", "destination": "/web/cliente.html" },
+    { "source": "/studio.html", "destination": "/web/studio.html" },
     { "source": "/styles.css", "destination": "/web/styles.css" },
     { "source": "/app.js", "destination": "/web/app.js" },
     { "source": "/public.js", "destination": "/web/public.js" },
