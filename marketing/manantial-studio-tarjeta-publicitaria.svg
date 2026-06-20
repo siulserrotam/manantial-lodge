@@ -1,0 +1,135 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="1748" height="1240" viewBox="0 0 1748 1240">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071225"/>
+      <stop offset="0.45" stop-color="#181044"/>
+      <stop offset="1" stop-color="#008ea6"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8448ff"/>
+      <stop offset="1" stop-color="#35e4d3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#03101f" flood-opacity="0.28"/>
+    </filter>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#2f1f7a" flood-opacity="0.22"/>
+    </filter>
+    <style>
+      .sans { font-family: Arial, Helvetica, sans-serif; }
+      .white { fill: #ffffff; }
+      .muted { fill: #c9d8ea; }
+      .ink { fill: #081225; }
+      .cyan { fill: #35e4d3; }
+      .orange { fill: #ff9b35; }
+      .purple { fill: #8448ff; }
+      .bold { font-weight: 800; }
+      .heavy { font-weight: 900; }
+      .card-title { font-size: 34px; }
+      .body { font-size: 25px; line-height: 1.35; }
+      .small { font-size: 20px; }
+    </style>
+  </defs>
+
+  <rect width="1748" height="1240" rx="0" fill="#f5fbff"/>
+  <path d="M0 0h1748v1240H0z" fill="url(#bg)"/>
+  <circle cx="1586" cy="188" r="260" fill="none" stroke="#35e4d3" stroke-opacity="0.14" stroke-width="2"/>
+  <circle cx="1586" cy="188" r="210" fill="none" stroke="#8448ff" stroke-opacity="0.16" stroke-width="2"/>
+  <circle cx="120" cy="1120" r="300" fill="none" stroke="#35e4d3" stroke-opacity="0.10" stroke-width="2"/>
+  <circle cx="120" cy="1120" r="238" fill="none" stroke="#8448ff" stroke-opacity="0.10" stroke-width="2"/>
+
+  <g transform="translate(82 78)">
+    <rect x="0" y="0" width="66" height="66" rx="14" fill="#35e4d3"/>
+    <text x="33" y="43" text-anchor="middle" class="sans ink heavy" font-size="28">MS</text>
+    <text x="86" y="30" class="sans white heavy" font-size="32">Manantial Studio</text>
+    <text x="86" y="58" class="sans muted bold" font-size="15" letter-spacing="3">SOLUCIONES DIGITALES</text>
+  </g>
+
+  <g transform="translate(82 210)">
+    <text class="sans orange heavy" font-size="20" letter-spacing="4">PAGINAS WEB | E-COMMERCE | INVENTARIO</text>
+    <text y="82" class="sans white heavy" font-size="70">Creamos presencia digital</text>
+    <text y="158" class="sans white heavy" font-size="70">para que tu negocio</text>
+    <text y="234" class="sans heavy" font-size="70" fill="#35e4d3">venda y se ordene mejor.</text>
+    <rect x="0" y="306" width="190" height="8" rx="4" fill="url(#accent)"/>
+    <text y="342" class="sans muted" font-size="29">Paginas web, catalogos QR, reservas, inventario</text>
+    <text y="382" class="sans muted" font-size="29">y facturacion de ventas para negocios en crecimiento.</text>
+  </g>
+
+  <g transform="translate(1110 108)" filter="url(#shadow)">
+    <rect x="0" y="0" width="510" height="490" rx="32" fill="#ffffff"/>
+    <rect x="34" y="34" width="442" height="280" rx="22" fill="#eef6ff"/>
+    <rect x="58" y="62" width="122" height="18" rx="9" fill="#8448ff"/>
+    <rect x="58" y="100" width="260" height="16" rx="8" fill="#d7e4f3"/>
+    <rect x="58" y="132" width="214" height="16" rx="8" fill="#d7e4f3"/>
+    <rect x="58" y="190" width="160" height="74" rx="14" fill="#ffffff"/>
+    <text x="80" y="224" class="sans ink heavy" font-size="28">+42%</text>
+    <text x="80" y="252" class="sans" fill="#64748b" font-size="16">mas consultas</text>
+    <polyline points="260,246 306,210 354,228 408,166 460,184" fill="none" stroke="#35e4d3" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="34" y="346" width="128" height="88" rx="18" fill="#f7f2ff"/>
+    <rect x="190" y="346" width="128" height="88" rx="18" fill="#effffd"/>
+    <rect x="346" y="346" width="128" height="88" rx="18" fill="#f7f9ff"/>
+    <text x="54" y="382" class="sans ink heavy" font-size="18">Catalogo</text>
+    <text x="208" y="382" class="sans ink heavy" font-size="18">Inventario</text>
+    <text x="364" y="382" class="sans ink heavy" font-size="18">Ventas</text>
+    <text x="54" y="416" class="sans purple heavy" font-size="25">QR</text>
+    <text x="208" y="416" class="sans purple heavy" font-size="25">Stock</text>
+    <text x="364" y="416" class="sans purple heavy" font-size="25">Recibos</text>
+  </g>
+
+  <g transform="translate(82 662)">
+    <rect x="0" y="0" width="334" height="172" rx="26" fill="#ffffff" filter="url(#soft)"/>
+    <rect x="34" y="34" width="58" height="58" rx="16" fill="#8448ff"/>
+    <text x="63" y="73" text-anchor="middle" class="sans white heavy" font-size="30">1</text>
+    <text x="116" y="54" class="sans ink heavy card-title">Pagina web</text>
+    <text x="116" y="88" class="sans" fill="#51627a" font-size="20">Diseno profesional</text>
+    <text x="34" y="132" class="sans" fill="#51627a" font-size="20">Servicios, contacto, SEO basico.</text>
+  </g>
+
+  <g transform="translate(448 662)">
+    <rect x="0" y="0" width="334" height="172" rx="26" fill="#ffffff" filter="url(#soft)"/>
+    <rect x="34" y="34" width="58" height="58" rx="16" fill="#11b6b5"/>
+    <text x="63" y="73" text-anchor="middle" class="sans white heavy" font-size="30">2</text>
+    <text x="116" y="54" class="sans ink heavy card-title">Catalogo QR</text>
+    <text x="116" y="88" class="sans" fill="#51627a" font-size="20">Productos y precios</text>
+    <text x="34" y="132" class="sans" fill="#51627a" font-size="20">Ideal para vender mas rapido.</text>
+  </g>
+
+  <g transform="translate(814 662)">
+    <rect x="0" y="0" width="334" height="172" rx="26" fill="#ffffff" filter="url(#soft)"/>
+    <rect x="34" y="34" width="58" height="58" rx="16" fill="#ff9b35"/>
+    <text x="63" y="73" text-anchor="middle" class="sans white heavy" font-size="30">3</text>
+    <text x="116" y="54" class="sans ink heavy card-title">Inventario</text>
+    <text x="116" y="88" class="sans" fill="#51627a" font-size="20">Control de productos</text>
+    <text x="34" y="132" class="sans" fill="#51627a" font-size="20">Entradas, salidas y existencias.</text>
+  </g>
+
+  <g transform="translate(1180 662)">
+    <rect x="0" y="0" width="334" height="172" rx="26" fill="#ffffff" filter="url(#soft)"/>
+    <rect x="34" y="34" width="58" height="58" rx="16" fill="#2f6dff"/>
+    <text x="63" y="73" text-anchor="middle" class="sans white heavy" font-size="30">4</text>
+    <text x="116" y="54" class="sans ink heavy card-title">Ventas</text>
+    <text x="116" y="88" class="sans" fill="#51627a" font-size="20">Recibos y totales</text>
+    <text x="34" y="132" class="sans" fill="#51627a" font-size="20">Informacion diaria organizada.</text>
+  </g>
+
+  <g transform="translate(82 914)" filter="url(#shadow)">
+    <rect x="0" y="0" width="1010" height="216" rx="30" fill="#ffffff"/>
+    <rect x="26" y="26" width="134" height="134" rx="28" fill="#25d366"/>
+    <path d="M93 54c-30 0-54 24-54 54 0 10 3 19 7 27l-8 30 31-8c7 4 15 6 24 6 30 0 54-24 54-54S123 54 93 54zm29 78c-3 8-15 15-21 15-5 0-12 0-32-12-27-13-45-41-46-43-1-2-11-14-11-27 0-13 7-19 9-22 2-3 5-3 7-3h5c2 0 4 0 6 5 2 5 8 18 8 20 1 2 1 4 0 6-1 2-2 4-4 6-2 2-4 5-6 7-2 2-4 4-2 8 2 4 9 15 20 24 14 12 25 16 29 18 4 2 7 2 9-1 3-3 10-12 13-16 3-4 6-3 10-2 4 1 25 12 29 14 4 2 7 3 8 5 1 2 1 10-2 18z" fill="#ffffff" transform="scale(.82) translate(37 16)"/>
+    <text x="196" y="66" class="sans cyan heavy" font-size="34">HABLEMOS</text>
+    <text x="196" y="124" class="sans ink heavy" font-size="62">311 576 8635</text>
+    <text x="196" y="166" class="sans" fill="#51627a" font-size="24">Escribenos por WhatsApp y cotiza tu proyecto.</text>
+    <rect x="730" y="28" width="250" height="160" rx="22" fill="#f5fbff" stroke="#dbe7f3"/>
+    <text x="855" y="74" text-anchor="middle" class="sans ink heavy" font-size="22">Escanea</text>
+    <text x="855" y="106" text-anchor="middle" class="sans" fill="#51627a" font-size="18">y conoce nuestros</text>
+    <text x="855" y="132" text-anchor="middle" class="sans" fill="#51627a" font-size="18">servicios</text>
+  </g>
+
+  <g transform="translate(1246 892)" filter="url(#shadow)">
+    <rect x="0" y="0" width="300" height="300" rx="28" fill="#ffffff"/>
+    <image x="24" y="24" width="252" height="252" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAaQAAAGkAQMAAABEgsN2AAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAACH0lEQVR4nO3bPXLDIBAFYDQpUuoIPoqOJh9NR/ERXLrQ6AV2Fxb8Uwfk9wpPRuijEmS9wiEwzLflB557CBMeeSReuIU1Xb9O1U07FVU/6mZ3TVEtiEo+LOse5qTuZS4qqhOovBxkpaTE6xe8TghsVFTdKnvm9d70L+D6o3NRUZ1UxfymIckelwvqCamo+lMaGTpExQ9JPWShohpfeYqKm73VNrky91BRdaPeBulxl3FVH2+kohpPlZXiy8FWitQ2EczAET+26alop6LqQeVnek6mNAHxlEOv7lRUY6sU2cwB76U41XEre9pQUXWjrkE385RQut8rdE3Ycsj7PBXVuMp6Ke1KydNdrPstSRNugYqqJ4VUg89ahSyQIXnwvfutea5tqKhGVc37yrb7bVt8/UXV1xcVVRfKO9q6mUM6gfW7G+Q1QUU1ugqlSQgd8jc+NhQr9yMX7VugoupH+dt2+V6pJ0x8aEWJTbhTUZ1ErchHp6D9Q9T7vJc9gYqqP3XoM2+lSN0JzM98W9tQUY2rpDKvxtv+oSv5jrpTUfWi2thmrtQmtPNRi2EqqsHVyzlYifcP5QRK9csFDRVVH+pmf9U/NPCivJyfyhNSUZ1ArSjLoeofws/BSrS2oaLqWL082LISytGpD2/bqahGVov1D/28NjzNhFRU/640Vn4/mk5gKCdMtvZ3N1RU4yrPm3OwQK7Xl/T3FqioRlcM8135A6v70QvpW529AAAAAElFTkSuQmCC"/>
+  </g>
+
+  <text x="82" y="1192" class="sans muted bold" font-size="22">studio.manantiallodge.com</text>
+</svg>
+
