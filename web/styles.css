@@ -1228,14 +1228,16 @@ select:disabled {
 }
 
 .studio-cards,
-.method-grid {
+.method-grid,
+.studio-client-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 
 .studio-cards article,
-.method-grid article {
+.method-grid article,
+.studio-client-grid article {
   min-height: 230px;
   padding: 28px;
   border: 1px solid rgba(204, 232, 244, 0.16);
@@ -1246,12 +1248,14 @@ select:disabled {
 }
 
 .studio-cards article:nth-child(even),
-.method-grid article:nth-child(2) {
+.method-grid article:nth-child(2),
+.studio-client-grid article:nth-child(even) {
   background: #f4f0ff;
 }
 
 .studio-cards span,
-.method-grid strong {
+.method-grid strong,
+.studio-client-grid span {
   color: #087d9c;
   font-size: 0.78rem;
   font-weight: 900;
@@ -1261,8 +1265,31 @@ select:disabled {
 .studio-cards h3,
 .studio-cards p,
 .method-grid h3,
-.method-grid p {
+.method-grid p,
+.studio-client-grid h3,
+.studio-client-grid p {
   margin-top: 0;
+}
+
+.studio-clients {
+  background: #edf9fc;
+  color: #12203d;
+}
+
+.studio-client-grid article {
+  min-height: 210px;
+}
+
+.studio-client-grid a {
+  color: #0b6f93;
+  font-weight: 900;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.studio-client-grid a:hover,
+.studio-client-grid a:focus-visible {
+  text-decoration: underline;
 }
 
 .studio-method {
@@ -1497,6 +1524,7 @@ select:disabled {
 
   .studio-hero-grid,
   .studio-cards,
+  .studio-client-grid,
   .founder-grid,
   .studio-company,
   .studio-method,

@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/",
-      "has": [{ "type": "host", "value": "studio.manantiallodge.com" }],
+      "has": [{ "type": "host", "value": "studios.manantiallodge.com" }],
       "destination": "/web/studio.html"
     },
     { "source": "/", "destination": "/web/index.html" },
