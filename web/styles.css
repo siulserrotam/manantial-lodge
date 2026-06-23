@@ -1021,7 +1021,7 @@ select:disabled {
 
 .studio-shell {
   min-height: 100vh;
-  background: #081224;
+  background: #15022f;
   color: #eef9ff;
 }
 
@@ -1029,8 +1029,9 @@ select:disabled {
   min-height: 88vh;
   padding: 28px clamp(18px, 5vw, 76px) 64px;
   background:
-    linear-gradient(135deg, rgba(8, 18, 36, 0.96) 0%, rgba(24, 12, 68, 0.92) 48%, rgba(0, 139, 164, 0.82) 100%),
-    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85") center/cover;
+    radial-gradient(circle at 50% 18%, rgba(176, 69, 255, 0.52), transparent 34%),
+    linear-gradient(135deg, rgba(15, 1, 38, 0.96) 0%, rgba(45, 8, 88, 0.9) 52%, rgba(10, 2, 33, 0.96) 100%),
+    url("assets/studio-manantial-logo-reference.png") center/cover;
   color: white;
   position: relative;
   overflow: hidden;
@@ -1097,6 +1098,15 @@ select:disabled {
   color: #111936;
 }
 
+.studio-brand img {
+  width: 58px;
+  height: 58px;
+  border-radius: 8px;
+  object-fit: cover;
+  object-position: center;
+  box-shadow: 0 0 22px rgba(188, 90, 255, 0.55);
+}
+
 .studio-hero-grid {
   position: relative;
   z-index: 1;
@@ -1112,7 +1122,7 @@ select:disabled {
 
 .studio-kicker {
   margin: 0 0 14px;
-  color: #ff9b35;
+  color: #d991ff;
   font-size: 0.76rem;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -1135,6 +1145,33 @@ select:disabled {
   margin-top: 28px;
 }
 
+.studio-promo {
+  display: inline-grid;
+  gap: 4px;
+  margin-top: 22px;
+  padding: 16px 20px;
+  border: 1px solid rgba(217, 145, 255, 0.34);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 42px rgba(126, 25, 255, 0.24);
+}
+
+.studio-promo small,
+.studio-promo span {
+  color: #ead8ff;
+  font-weight: 800;
+}
+
+.studio-promo small {
+  text-transform: uppercase;
+}
+
+.studio-promo strong {
+  color: white;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1;
+}
+
 .studio-shell .button-link {
   display: inline-flex;
   align-items: center;
@@ -1143,15 +1180,58 @@ select:disabled {
   padding: 14px 20px;
   border: 0;
   border-radius: 8px;
-  background: #37e7da;
-  color: #111936;
+  background: linear-gradient(135deg, #b65cff, #7b19ff);
+  color: white;
   font-weight: 900;
   text-decoration: none;
+  box-shadow: 0 12px 30px rgba(136, 39, 255, 0.38);
 }
 
 .studio-shell .button-link:hover,
 .studio-shell .button-link:focus-visible {
-  background: #8448ff;
+  background: #ffffff;
+  color: #240542;
+}
+
+.studio-socials {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.studio-socials a {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(217, 145, 255, 0.38);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-decoration: none;
+}
+
+.studio-socials a:hover,
+.studio-socials a:focus-visible {
+  background: #b65cff;
+  border-color: #ffffff;
+}
+
+.studio-socials svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.studio-socials span {
+  color: #ead8ff;
+  font-weight: 900;
+}
+
+.secondary-link:hover,
+.secondary-link:focus-visible {
   color: white;
 }
 
@@ -1159,10 +1239,10 @@ select:disabled {
   display: grid;
   gap: 18px;
   padding: 24px;
-  border: 1px solid rgba(55, 231, 218, 0.24);
+  border: 1px solid rgba(217, 145, 255, 0.28);
   border-radius: 8px;
   background: rgba(7, 15, 32, 0.68);
-  box-shadow: 0 30px 80px rgba(18, 11, 47, 0.3);
+  box-shadow: 0 30px 80px rgba(188, 90, 255, 0.22);
   backdrop-filter: blur(16px);
 }
 
@@ -1175,7 +1255,7 @@ select:disabled {
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: #37e7da;
+  background: #d991ff;
 }
 
 .console-bar span:nth-child(2) {
@@ -1183,12 +1263,12 @@ select:disabled {
 }
 
 .console-bar span:nth-child(3) {
-  background: #a98cff;
+  background: #7b19ff;
 }
 
 .console-label {
   margin: 0;
-  color: #37e7da;
+  color: #d991ff;
   font-weight: 900;
 }
 
@@ -1211,7 +1291,7 @@ select:disabled {
 }
 
 .studio-console li span {
-  color: #37e7da;
+  color: #d991ff;
   font-weight: 900;
 }
 
@@ -1250,13 +1330,13 @@ select:disabled {
 .studio-cards article:nth-child(even),
 .method-grid article:nth-child(2),
 .studio-client-grid article:nth-child(even) {
-  background: #f4f0ff;
+  background: #f5edff;
 }
 
 .studio-cards span,
 .method-grid strong,
 .studio-client-grid span {
-  color: #087d9c;
+  color: #7b19ff;
   font-size: 0.78rem;
   font-weight: 900;
   text-transform: uppercase;
@@ -1272,7 +1352,7 @@ select:disabled {
 }
 
 .studio-clients {
-  background: #edf9fc;
+  background: #f4e9ff;
   color: #12203d;
 }
 
@@ -1281,7 +1361,7 @@ select:disabled {
 }
 
 .studio-client-grid a {
-  color: #0b6f93;
+  color: #7b19ff;
   font-weight: 900;
   text-decoration: none;
   word-break: break-word;
@@ -1293,9 +1373,9 @@ select:disabled {
 }
 
 .studio-method {
-  background: linear-gradient(180deg, #0b1932 0%, #10163f 100%);
-  border-top: 1px solid rgba(55, 231, 218, 0.14);
-  border-bottom: 1px solid rgba(55, 231, 218, 0.14);
+  background: linear-gradient(180deg, #17042f 0%, #2b0752 100%);
+  border-top: 1px solid rgba(217, 145, 255, 0.18);
+  border-bottom: 1px solid rgba(217, 145, 255, 0.18);
 }
 
 .method-grid {
@@ -1304,7 +1384,7 @@ select:disabled {
 
 .studio-stack,
 .studio-founders {
-  background: #081224;
+  background: #120226;
   color: white;
 }
 
@@ -1347,7 +1427,7 @@ select:disabled {
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #37e7da, #8448ff);
+  background: linear-gradient(135deg, #d991ff, #7b19ff);
   color: white;
   font-weight: 900;
 }
@@ -1371,11 +1451,11 @@ select:disabled {
 
 .studio-company {
   display: grid;
-  grid-template-columns: 1.4fr repeat(4, minmax(0, 1fr));
+  grid-template-columns: 1.35fr repeat(5, minmax(0, 1fr));
   gap: 34px;
   padding: 58px clamp(18px, 5vw, 76px);
-  border-top: 1px solid rgba(55, 231, 218, 0.18);
-  background: linear-gradient(135deg, #0b6f93 0%, #1d2d86 100%);
+  border-top: 1px solid rgba(217, 145, 255, 0.2);
+  background: linear-gradient(135deg, #220447 0%, #5a0aa3 100%);
   color: white;
 }
 
@@ -1404,8 +1484,8 @@ select:disabled {
   margin-bottom: 58px;
   padding: 36px clamp(18px, 4vw, 42px);
   border-radius: 8px;
-  background: linear-gradient(135deg, #f9fcff 0%, #ecfbff 100%);
-  border: 1px solid rgba(55, 231, 218, 0.35);
+  background: linear-gradient(135deg, #fbf8ff 0%, #f0e2ff 100%);
+  border: 1px solid rgba(123, 25, 255, 0.28);
   color: #12203d;
 }
 

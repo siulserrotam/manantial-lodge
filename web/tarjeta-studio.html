@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tarjeta Manantial Studio</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        align-content: start;
+        justify-items: center;
+        justify-content: flex-start;
+        gap: 28px;
+        padding: 38px;
+        background:
+          radial-gradient(circle at 50% 18%, rgba(177, 69, 255, 0.55), transparent 36%),
+          linear-gradient(135deg, #080015 0%, #250044 54%, #090018 100%);
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .preview {
+        display: grid;
+        grid-template-columns: repeat(2, 690px);
+        gap: 34px;
+        width: 1414px;
+      }
+
+      .card {
+        position: relative;
+        overflow: hidden;
+        width: 690px;
+        height: 394px;
+        padding: 28px 38px;
+        border: 1px solid rgba(220, 143, 255, 0.42);
+        border-radius: 8px;
+        background:
+          radial-gradient(circle at 74% 22%, rgba(255, 255, 255, 0.18), transparent 5%),
+          linear-gradient(135deg, rgba(11, 0, 28, 0.88), rgba(76, 8, 133, 0.8)),
+          url("assets/studio-manantial-logo-reference.png") center/cover;
+        box-shadow: 0 24px 80px rgba(138, 24, 255, 0.42);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(90deg, transparent 0 8%, rgba(204, 95, 255, 0.18) 8.2% 8.6%, transparent 8.8% 100%),
+          radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.22), transparent 3%),
+          radial-gradient(circle at 14% 78%, rgba(204, 95, 255, 0.22), transparent 4%);
+        pointer-events: none;
+      }
+
+      .card > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .front {
+        display: grid;
+        align-items: center;
+      }
+
+      .brand-lockup {
+        display: grid;
+        justify-items: center;
+        align-content: center;
+        gap: 8px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .brand-lockup img {
+        display: none;
+      }
+
+      .headline {
+        margin: 0;
+        font-size: 52px;
+        line-height: 0.95;
+        text-transform: uppercase;
+        letter-spacing: 0;
+      }
+
+      .headline span {
+        display: inline;
+      }
+
+      .headline strong {
+        display: block;
+        color: white;
+        font-size: 38px;
+        text-transform: none;
+      }
+
+      .headline em {
+        display: inline-block;
+        padding: 4px 18px 6px;
+        border: 1px solid rgba(221, 136, 255, 0.6);
+        background: rgba(35, 0, 64, 0.62);
+        color: #dc8fff;
+        font-style: normal;
+        box-shadow: 0 0 18px rgba(181, 65, 255, 0.4);
+      }
+
+      .subtitle {
+        margin: 0;
+        color: #ffffff;
+        font-size: 23px;
+        font-weight: 900;
+      }
+
+      .price {
+        display: inline-grid;
+        gap: 2px;
+        padding: 2px 18px 4px;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .price small {
+        color: #ead6ff;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 22px;
+      }
+
+      .price strong {
+        font-size: 52px;
+        line-height: 1;
+        text-shadow: 0 0 22px rgba(221, 136, 255, 0.6);
+      }
+
+      .contact-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        width: 330px;
+        justify-content: center;
+        padding: 8px 16px;
+        margin-top: -2px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #22c55e, #168b42);
+        color: white;
+        font-weight: 900;
+        font-size: 25px;
+        box-shadow: 0 0 18px rgba(26, 193, 86, 0.44);
+      }
+
+      .back {
+        display: grid;
+        grid-template-columns: 188px 1fr;
+        align-items: center;
+        gap: 26px;
+        padding-bottom: 96px;
+      }
+
+      .qr-block {
+        display: grid;
+        gap: 10px;
+        justify-items: center;
+      }
+
+      .qr-block img {
+        width: 170px;
+        height: 170px;
+        padding: 10px;
+        border-radius: 8px;
+        background: white;
+      }
+
+      .qr-block p {
+        margin: 0;
+        color: #ead6ff;
+        font-weight: 900;
+        font-size: 19px;
+      }
+
+      .person {
+        display: grid;
+        gap: 9px;
+        min-width: 0;
+      }
+
+      .person h1,
+      .person p {
+        margin: 0;
+      }
+
+      .person h1 {
+        font-size: 38px;
+        line-height: 1;
+      }
+
+      .role {
+        color: #dc8fff;
+        font-size: 25px;
+        font-weight: 900;
+      }
+
+      .line {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .details {
+        display: grid;
+        gap: 7px;
+        font-size: 17px;
+        font-weight: 800;
+        min-width: 0;
+      }
+
+      .details span {
+        white-space: nowrap;
+      }
+
+      .details .email {
+        font-size: 15px;
+      }
+
+      .socials {
+        position: absolute;
+        left: 50%;
+        bottom: 34px;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 420px;
+        min-height: 52px;
+        padding: 8px 14px;
+        border: 1px solid rgba(221, 136, 255, 0.5);
+        border-radius: 8px;
+        background: rgba(32, 0, 60, 0.38);
+        box-shadow: 0 0 18px rgba(181, 65, 255, 0.2);
+        margin: 0;
+      }
+
+      .socials a {
+        display: inline-grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .socials svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+      }
+
+      .socials strong {
+        color: #ead6ff;
+        font-size: 16px;
+        white-space: nowrap;
+      }
+
+      .note {
+        width: 1414px;
+        color: #ead6ff;
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="preview" aria-label="Diseno de tarjeta Manantial Studio">
+      <section class="card front" aria-label="Frente de tarjeta">
+        <div class="brand-lockup">
+          <h1 class="headline">
+            <strong>Desarrollos</strong>
+            <em>Web & Software</em>
+          </h1>
+          <p class="subtitle">para Negocios</p>
+          <p class="price">
+            <small>Valor desde</small>
+            <strong>$199.000 COP</strong>
+          </p>
+          <p class="contact-pill">WSP 301 886 7205</p>
+        </div>
+      </section>
+
+      <section class="card back" aria-label="Reverso de tarjeta">
+        <div class="qr-block">
+          <img src="assets/studio-manantial-qr.png" alt="QR para visitar studios.manantiallodge.com">
+          <p>Escanea el QR</p>
+        </div>
+        <div class="person">
+          <p class="role">Gerente Comercial</p>
+          <h1>Lady Di Trujillo</h1>
+          <div class="line"></div>
+          <div class="details">
+            <span>Calle 109 # 18 C 17, Bogota</span>
+            <span class="email">Comercial@Studio.manantiallodge.com</span>
+            <span>studios.manantiallodge.com</span>
+          </div>
+          <div class="socials" aria-label="Redes sociales">
+            <a href="https://wa.me/573018867205" target="_blank" rel="noopener" aria-label="WhatsApp @StudiosMantial">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2A9.7 9.7 0 0 0 3.7 16.9L2.5 21.8l5-1.3A9.7 9.7 0 1 0 12 2.2Zm0 1.9a7.8 7.8 0 0 1 6.7 11.8 7.8 7.8 0 0 1-10.5 2.7l-.4-.2-2.4.6.6-2.3-.2-.4A7.8 7.8 0 0 1 12 4.1Zm-3.2 4.3c-.2 0-.4.1-.6.3-.2.2-.7.7-.7 1.8s.8 2.1.9 2.3c.1.2 1.5 2.4 3.8 3.3 1.9.8 2.3.6 2.7.6.4-.1 1.2-.5 1.4-1 .2-.5.2-.9.1-1-.1-.1-.2-.2-.5-.3l-1.5-.7c-.2-.1-.4-.1-.6.1l-.7.8c-.1.2-.3.2-.5.1-.3-.1-1.1-.4-2-1.2-.7-.7-1.2-1.5-1.3-1.7-.1-.2 0-.4.1-.5l.4-.5c.1-.1.2-.2.2-.4.1-.2 0-.3 0-.5l-.7-1.6c-.1-.3-.3-.4-.5-.4Z"/></svg>
+            </a>
+            <a href="https://facebook.com/StudiosMantial" target="_blank" rel="noopener" aria-label="Facebook @StudiosMantial">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.2V6.9c0-.7.2-1.1 1.1-1.1h1.5V3.2c-.7-.1-1.5-.2-2.2-.2-2.2 0-3.8 1.4-3.8 3.8v1.4H8.2V11h2.4v10h3.1V11h2.5l.4-2.8H14Z"/></svg>
+            </a>
+            <a href="https://instagram.com/StudiosMantial" target="_blank" rel="noopener" aria-label="Instagram @StudiosMantial">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 2.8h9.6A4.4 4.4 0 0 1 21.2 7.2v9.6a4.4 4.4 0 0 1-4.4 4.4H7.2a4.4 4.4 0 0 1-4.4-4.4V7.2a4.4 4.4 0 0 1 4.4-4.4Zm0 2A2.4 2.4 0 0 0 4.8 7.2v9.6a2.4 2.4 0 0 0 2.4 2.4h9.6a2.4 2.4 0 0 0 2.4-2.4V7.2a2.4 2.4 0 0 0-2.4-2.4H7.2Zm4.8 3.1a4.1 4.1 0 1 1 0 8.2 4.1 4.1 0 0 1 0-8.2Zm0 2a2.1 2.1 0 1 0 0 4.2 2.1 2.1 0 0 0 0-4.2Zm4.4-2.6a1 1 0 1 1 0 2.1 1 1 0 0 1 0-2.1Z"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@StudiosMantial" target="_blank" rel="noopener" aria-label="TikTok @StudiosMantial">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.8 3c.3 2.3 1.5 3.7 3.7 3.9v3a6.8 6.8 0 0 1-3.7-1.2v5.8c0 3-2.1 5.7-5.7 5.7a5.5 5.5 0 0 1-5.6-5.5c0-3.5 3.1-6.1 6.7-5.4v3.1c-1.7-.5-3.5.6-3.5 2.3a2.3 2.3 0 0 0 2.4 2.3c1.5 0 2.5-.9 2.5-2.7V3h3.2Z"/></svg>
+            </a>
+            <strong>@StudiosMantial</strong>
+          </div>
+        </div>
+      </section>
+    </main>
+    <p class="note">Primer diseno local. Este archivo aun no esta subido a Git.</p>
+  </body>
+</html>
