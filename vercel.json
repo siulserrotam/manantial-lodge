@@ -11,6 +11,7 @@
     { "source": "/admin.html", "destination": "/web/admin.html" },
     { "source": "/cliente.html", "destination": "/web/cliente.html" },
     { "source": "/studio.html", "destination": "/web/studio.html" },
+    { "source": "/assets/:path*", "destination": "/web/assets/:path*" },
     { "source": "/styles.css", "destination": "/web/styles.css" },
     { "source": "/app.js", "destination": "/web/app.js" },
     { "source": "/public.js", "destination": "/web/public.js" },
