@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prospectos | Manantial Studio</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="prospect-shell">
+      <header class="prospect-header">
+        <a class="studio-brand" href="/studio.html" aria-label="Volver a Manantial Studio">
+          <img src="assets/studio-manantial-logo.png" alt="" aria-hidden="true">
+          <strong>Manantial Studio</strong>
+        </a>
+        <div>
+          <p class="studio-kicker">Prospeccion comercial</p>
+          <h1>Buscador de negocios</h1>
+          <p>Consulta negocios publicados en OpenStreetMap por categoria y lugar, revisa los resultados y exporta la lista para gestion comercial.</p>
+        </div>
+      </header>
+
+      <section class="prospect-panel" aria-labelledby="prospect-form-title">
+        <div class="section-title">
+          <h2 id="prospect-form-title">Buscar prospectos</h2>
+          <a class="secondary-link prospect-back" href="/studio.html">Volver al sitio</a>
+        </div>
+
+        <form id="prospect-form" class="prospect-form">
+          <label for="prospect-type">Categoria</label>
+          <select id="prospect-type" name="tipo" required>
+            <option value="glamping">Glamping</option>
+            <option value="lavanderia">Lavanderias</option>
+            <option value="restaurantes campestres">Restaurantes campestres</option>
+            <option value="hoteles campestres">Hoteles campestres</option>
+            <option value="veterinaria">Veterinarias</option>
+            <option value="hotel">Hoteles</option>
+            <option value="restaurante">Restaurantes</option>
+          </select>
+
+          <label for="prospect-country">Pais</label>
+          <input id="prospect-country" name="pais" value="Colombia" autocomplete="country-name" required>
+
+          <label for="prospect-city">Ciudad o departamento</label>
+          <input id="prospect-city" name="ciudad" value="Bogota" placeholder="Bogota, Medellin, Boyaca..." autocomplete="address-level2" required>
+
+          <label for="prospect-limit">Limite</label>
+          <select id="prospect-limit" name="limite">
+            <option value="10">10 negocios</option>
+            <option value="25">25 negocios</option>
+            <option value="50" selected>50 negocios</option>
+          </select>
+
+          <button type="submit">Buscar</button>
+        </form>
+
+        <p id="prospect-message" class="message" role="status"></p>
+      </section>
+
+      <section class="prospect-panel" aria-labelledby="prospect-results-title">
+        <div class="prospect-results-head">
+          <div>
+            <h2 id="prospect-results-title">Resultados</h2>
+            <p id="prospect-summary" class="muted">Aun no hay resultados cargados.</p>
+          </div>
+          <div class="prospect-actions">
+            <button id="prospect-csv" class="secondary-button" type="button" disabled>Descargar CSV</button>
+            <button id="prospect-excel" type="button" disabled>Descargar Excel</button>
+          </div>
+        </div>
+
+        <div class="prospect-table-wrap">
+          <table class="prospect-table">
+            <thead>
+              <tr>
+                <th>Negocio</th>
+                <th>Categoria</th>
+                <th>Ciudad</th>
+                <th>Telefono</th>
+                <th>Web</th>
+                <th>Correo</th>
+                <th>Ubicacion</th>
+              </tr>
+            </thead>
+            <tbody id="prospect-rows">
+              <tr>
+                <td colspan="7">Selecciona una categoria y un lugar para iniciar.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="prospectos.js"></script>
+  </body>
+</html>

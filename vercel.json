@@ -11,10 +11,12 @@
     { "source": "/admin.html", "destination": "/web/admin.html" },
     { "source": "/cliente.html", "destination": "/web/cliente.html" },
     { "source": "/studio.html", "destination": "/web/studio.html" },
+    { "source": "/prospectos.html", "destination": "/web/prospectos.html" },
     { "source": "/assets/:path*", "destination": "/web/assets/:path*" },
     { "source": "/styles.css", "destination": "/web/styles.css" },
     { "source": "/app.js", "destination": "/web/app.js" },
     { "source": "/public.js", "destination": "/web/public.js" },
-    { "source": "/client.js", "destination": "/web/client.js" }
+    { "source": "/client.js", "destination": "/web/client.js" },
+    { "source": "/prospectos.js", "destination": "/web/prospectos.js" }
   ]
 }
