@@ -58,7 +58,98 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 /api/login         Login administrativo
 /api/funcionarios  Crear empleados
 /api/reservas      Crear reservas publicas
+/api/prospectos/buscar    Busca prospectos desde OpenStreetMap/Overpass
+/api/prospectos/exportar  Exporta prospectos a Excel
 ```
+
+## Modulo de prospectos
+
+El modulo de prospectos busca negocios por tipo, pais y ciudad usando OpenStreetMap a traves de Overpass API. No usa Google Places ni servicios pagos.
+
+### Instalar dependencias
+
+```bash
+npm install
+```
+
+Dependencias principales:
+
+```text
+axios    Peticiones HTTP a Overpass y sitios web publicos
+cheerio  Lectura de HTML para intentar encontrar correos visibles
+xlsx     Exportacion de resultados a Excel
+```
+
+### Variables opcionales
+
+```text
+OVERPASS_API_URL=https://overpass-api.de/api/interpreter
+NOMINATIM_API_URL=https://nominatim.openstreetmap.org/search
+OVERPASS_TIMEOUT_MS=25000
+PROSPECTOS_GEOCODE_TIMEOUT_MS=8000
+PROSPECTOS_EMAIL_TIMEOUT_MS=6000
+PROSPECTOS_USER_AGENT=StudioManantialProspectos/1.0 (contacto@manantiallodge.com)
+```
+
+Si no se configuran, el modulo usa valores por defecto conservadores. Primero ubica la ciudad o departamento con Nominatim de OpenStreetMap para consultar Overpass por bbox, evitando areas enormes. Las busquedas se limitan a maximo 50 resultados para respetar el uso de Overpass.
+
+### Ejemplos de uso
+
+Buscar negocios:
+
+```text
+GET /api/prospectos/buscar?tipo=glamping&pais=Colombia&ciudad=Bogota
+GET /api/prospectos/buscar?tipo=lavanderia&pais=Colombia&ciudad=Medellin
+GET /api/prospectos/buscar?tipo=restaurantes%20campestres&pais=Colombia&ciudad=Cundinamarca
+GET /api/prospectos/buscar?tipo=hoteles%20campestres&pais=Colombia&ciudad=Boyaca
+```
+
+Exportar a Excel:
+
+```text
+GET /api/prospectos/exportar?tipo=glamping&pais=Colombia&ciudad=Bogota
+```
+
+Respuesta JSON esperada en busqueda:
+
+```json
+{
+  "ok": true,
+  "total": 1,
+  "limite": 50,
+  "prospectos": [
+    {
+      "nombre": "Nombre del negocio",
+      "tipo": "glamping",
+      "pais": "Colombia",
+      "ciudad": "Bogota",
+      "direccion": "Direccion si existe",
+      "telefono": "",
+      "sitio_web": "",
+      "correo": "",
+      "latitud": 4.711,
+      "longitud": -74.0721,
+      "fuente": "OpenStreetMap / Overpass API",
+      "estado_comercial": "Pendiente"
+    }
+  ]
+}
+```
+
+Si el negocio tiene sitio web, el modulo intenta encontrar correos en la pagina principal y en `/contacto`, `/contact` y `/reservas`. Si no encuentra correo, retorna `Sin correo`; si el negocio no tiene web, deja el campo vacio.
+
+### Agregar nuevos tipos de negocio
+
+Edita `src/modules/prospectos/prospectos.utils.js` y agrega una entrada en `BUSINESS_TAGS` con sus alias y tags de OpenStreetMap. Ejemplo:
+
+```js
+{
+  aliases: ["spa", "spas"],
+  filters: [{ key: "leisure", value: "spa" }]
+}
+```
+
+Cada filtro se consulta para nodos, ways y relations dentro del area indicada.
 
 ## Nota sobre Delphi
 
