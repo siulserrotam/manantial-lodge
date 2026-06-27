@@ -6,7 +6,8 @@
     <title>Synkro | E-commerce y ERP en perfecto orden</title>
     <meta name="description" content="Synkro conecta tiendas online con ERPs contables para reducir digitacion manual, errores de facturacion e inventarios descuadrados.">
     <meta name="robots" content="index, follow">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/synkro/styles.css">
   </head>
   <body>
     <main class="synkro-shell">
@@ -18,8 +19,8 @@
           </a>
           <div>
             <a href="#roi">ROI</a>
-            <a href="#flujo">Flujo</a>
-            <a href="#contacto">Validar demo</a>
+            <a href="#flow">Flujo</a>
+            <a href="#contact">Validar demo</a>
           </div>
         </nav>
 
@@ -28,7 +29,7 @@
           <h1 id="synkro-title">Synkro</h1>
           <p>Tu e-commerce y tu ERP, en perfecto orden. Automatiza el paso de pedidos web hacia facturacion, inventario y contabilidad sin digitacion manual.</p>
           <div class="synkro-actions">
-            <a class="button-link" href="#contacto">Validar mi caso</a>
+            <a class="button-link" href="#contact">Validar mi caso</a>
             <a class="secondary-link" href="#roi">Calcular ahorro</a>
           </div>
         </div>
@@ -85,7 +86,7 @@
         </div>
       </section>
 
-      <section id="flujo" class="synkro-section synkro-flow" aria-labelledby="flow-title">
+      <section id="flow" class="synkro-section synkro-flow" aria-labelledby="flow-title">
         <p class="synkro-kicker">Fase 1 de producto</p>
         <h2 id="flow-title">Primero validamos el dolor real antes de construir toda la plataforma.</h2>
         <div class="synkro-grid">
@@ -107,27 +108,27 @@
         </div>
       </section>
 
-      <section id="contacto" class="synkro-section synkro-contact" aria-labelledby="contact-title">
+      <section id="contact" class="synkro-section synkro-contact" aria-labelledby="contact-title">
         <div>
           <p class="synkro-kicker">Validacion privada</p>
-          <h2 id="contact-title">Cuéntanos tu flujo actual y validamos si Synkro puede ayudarte.</h2>
+          <h2 id="contact-title">Cuentanos tu flujo actual y validamos si Synkro puede ayudarte.</h2>
           <p>Esta primera fase busca aprender de empresas reales antes de construir conectores completos.</p>
         </div>
         <form id="synkro-lead-form" class="synkro-form">
           <label for="lead-name">Nombre</label>
-          <input id="lead-name" name="nombre" autocomplete="name" required>
+          <input id="lead-name" name="name" autocomplete="name" required>
 
           <label for="lead-email">Correo</label>
           <input id="lead-email" name="email" type="email" autocomplete="email" required>
 
           <label for="lead-phone">Celular</label>
-          <input id="lead-phone" name="celular" autocomplete="tel" required>
+          <input id="lead-phone" name="phone" autocomplete="tel" required>
 
           <label for="lead-company">Empresa</label>
-          <input id="lead-company" name="empresa" autocomplete="organization">
+          <input id="lead-company" name="company" autocomplete="organization">
 
           <label for="lead-ecommerce">Plataforma e-commerce</label>
-          <select id="lead-ecommerce" name="ecommerce">
+          <select id="lead-ecommerce" name="ecommercePlatform">
             <option value="">Seleccionar</option>
             <option>Shopify</option>
             <option>WooCommerce</option>
@@ -136,7 +137,7 @@
           </select>
 
           <label for="lead-erp">ERP o sistema contable</label>
-          <select id="lead-erp" name="erp">
+          <select id="lead-erp" name="erpSystem">
             <option value="">Seleccionar</option>
             <option>Siigo Colombia</option>
             <option>Siigo Ecuador</option>
@@ -147,15 +148,15 @@
           </select>
 
           <label for="lead-message">Mensaje</label>
-          <textarea id="lead-message" name="mensaje" placeholder="Cuantos pedidos procesan, que errores se repiten o que ERP usan hoy."></textarea>
+          <textarea id="lead-message" name="message" placeholder="Cuantos pedidos procesan, que errores se repiten o que ERP usan hoy."></textarea>
 
-          <input id="lead-orders" name="pedidosMes" type="hidden" value="600">
+          <input id="lead-orders" name="monthlyOrders" type="hidden" value="600">
           <button type="submit">Solicitar validacion</button>
           <p id="synkro-message" class="message" role="status"></p>
         </form>
       </section>
     </main>
 
-    <script src="synkro.js"></script>
+    <script src="/synkro/app.js"></script>
   </body>
 </html>

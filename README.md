@@ -167,7 +167,7 @@ Cada filtro se consulta para nodos, ways y relations dentro del area indicada.
 Synkro es una validacion inicial para un producto SaaS B2B que conectara tiendas online con ERPs contables. En esta primera fase dentro de este repositorio solo se implementa la entrada comercial:
 
 ```text
-synkro.manantiallodge.com -> /web/synkro.html
+synkro.manantiallodge.com -> /web/synkro/index.html
 /synkro.html              -> landing local/manual
 /api/synkro/leads         -> captura de leads en Supabase
 /synkro-leads.html        -> seguimiento interno de leads
@@ -182,7 +182,15 @@ Flujo conceptual e-commerce -> Synkro -> ERP
 Formulario de validacion comercial
 ```
 
-Para guardar leads en Supabase, ejecuta el bloque de `synkro_leads` incluido en `supabase/schema.sql` o vuelve a correr el schema completo en un entorno controlado.
+Los archivos del subproyecto estan aislados en:
+
+```text
+web/synkro/
+api/synkro/
+docs/synkro-*.md
+```
+
+Para guardar leads en Supabase, ejecuta el bloque de `synkro_leads` incluido en `supabase/schema.sql` o vuelve a correr el schema completo en un entorno controlado. Los campos propios de Synkro estan en ingles para mantener consistencia futura con el backend SaaS.
 
 Variables necesarias ya existentes:
 
@@ -216,7 +224,9 @@ Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
 
 La pagina `/synkro-leads.html` permite pegar el token, filtrar leads por estado, cambiar estado y guardar nota comercial.
 
-El resumen vivo de fases esta en `docs/synkro-fases.md`.
+La guia de configuracion esta en `docs/synkro-setup.md`.
+
+El resumen vivo de fases esta en `docs/synkro-phases.md`.
 
 ## Nota sobre Delphi
 

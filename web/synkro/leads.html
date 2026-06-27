@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Leads Synkro | Manantial Studio</title>
     <meta name="robots" content="noindex, nofollow">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/synkro/styles.css">
   </head>
   <body>
     <main class="synkro-admin-shell">
@@ -28,12 +29,12 @@
           <input id="synkro-token" name="token" type="password" autocomplete="off" required>
 
           <label for="synkro-status-filter">Estado</label>
-          <select id="synkro-status-filter" name="estado">
+          <select id="synkro-status-filter" name="status">
             <option value="">Todos</option>
-            <option value="nuevo">Nuevo</option>
-            <option value="contactado">Contactado</option>
-            <option value="calificado">Calificado</option>
-            <option value="descartado">Descartado</option>
+            <option value="new">Nuevo</option>
+            <option value="contacted">Contactado</option>
+            <option value="qualified">Calificado</option>
+            <option value="discarded">Descartado</option>
           </select>
 
           <button type="submit">Cargar leads</button>
@@ -58,6 +59,6 @@
       </section>
     </main>
 
-    <script src="synkro-leads.js"></script>
+    <script src="/synkro/leads.js"></script>
   </body>
 </html>

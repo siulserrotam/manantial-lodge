@@ -103,24 +103,89 @@ create table if not exists public.cargos_cuenta (
 
 create table if not exists public.synkro_leads (
   id uuid primary key default gen_random_uuid(),
-  nombre text not null,
+  name text not null,
   email text not null,
-  celular text not null,
-  empresa text,
-  ecommerce text,
-  erp text,
-  pedidos_mes integer not null default 0,
-  mensaje text,
-  nota_comercial text,
-  origen text not null default 'synkro_landing',
-  estado text not null default 'nuevo',
-  creado_en timestamptz not null default now(),
-  actualizado_en timestamptz
+  phone text not null,
+  company text,
+  ecommerce_platform text,
+  erp_system text,
+  monthly_orders integer not null default 0,
+  message text,
+  commercial_note text,
+  source text not null default 'synkro_landing',
+  status text not null default 'new',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz
 );
 
 alter table public.synkro_leads
-  add column if not exists nota_comercial text,
-  add column if not exists actualizado_en timestamptz;
+  add column if not exists name text,
+  add column if not exists phone text,
+  add column if not exists company text,
+  add column if not exists ecommerce_platform text,
+  add column if not exists erp_system text,
+  add column if not exists monthly_orders integer not null default 0,
+  add column if not exists message text,
+  add column if not exists commercial_note text,
+  add column if not exists source text not null default 'synkro_landing',
+  add column if not exists status text not null default 'new',
+  add column if not exists created_at timestamptz not null default now(),
+  add column if not exists updated_at timestamptz;
+
+do $$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'synkro_leads'
+      and column_name = 'nombre'
+  ) then
+    execute 'alter table public.synkro_leads alter column nombre drop not null';
+  end if;
+
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'synkro_leads'
+      and column_name = 'celular'
+  ) then
+    execute 'alter table public.synkro_leads alter column celular drop not null';
+  end if;
+
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'synkro_leads'
+      and column_name = 'nombre'
+  ) then
+    execute $migration$
+      update public.synkro_leads
+      set
+        name = coalesce(name, nombre),
+        phone = coalesce(phone, celular),
+        company = coalesce(company, empresa),
+        ecommerce_platform = coalesce(ecommerce_platform, ecommerce),
+        erp_system = coalesce(erp_system, erp),
+        monthly_orders = coalesce(monthly_orders, pedidos_mes, 0),
+        message = coalesce(message, mensaje),
+        commercial_note = coalesce(commercial_note, nota_comercial),
+        source = coalesce(source, origen, 'synkro_landing'),
+        status = coalesce(status, case estado
+          when 'nuevo' then 'new'
+          when 'contactado' then 'contacted'
+          when 'calificado' then 'qualified'
+          when 'descartado' then 'discarded'
+          else estado
+        end, 'new'),
+        created_at = coalesce(created_at, creado_en, now()),
+        updated_at = coalesce(updated_at, actualizado_en)
+      where true
+    $migration$;
+  end if;
+end $$;
 
 insert into public.inventario (nombre, categoria, unidad, cantidad, valor_compra)
 values

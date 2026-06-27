@@ -15,6 +15,8 @@ function formatCurrency(value) {
   return `$${Math.round(value).toLocaleString("es-CO")}`;
 }
 
+// ES: Actualiza la calculadora ROI cuando cambia el volumen de pedidos.
+// EN: Updates the ROI calculator when the monthly order volume changes.
 function updateRoi() {
   const orders = Number(ordersRange.value || 0);
   const hours = (orders * minutesPerOrder) / 60;

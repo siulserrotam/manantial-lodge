@@ -10,14 +10,14 @@
     {
       "source": "/",
       "has": [{ "type": "host", "value": "synkro.manantiallodge.com" }],
-      "destination": "/web/synkro.html"
+      "destination": "/web/synkro/index.html"
     },
     { "source": "/", "destination": "/web/index.html" },
     { "source": "/admin.html", "destination": "/web/admin.html" },
     { "source": "/cliente.html", "destination": "/web/cliente.html" },
     { "source": "/studio.html", "destination": "/web/studio.html" },
-    { "source": "/synkro.html", "destination": "/web/synkro.html" },
-    { "source": "/synkro-leads.html", "destination": "/web/synkro-leads.html" },
+    { "source": "/synkro.html", "destination": "/web/synkro/index.html" },
+    { "source": "/synkro-leads.html", "destination": "/web/synkro/leads.html" },
     { "source": "/prospectos.html", "destination": "/web/prospectos.html" },
     { "source": "/assets/:path*", "destination": "/web/assets/:path*" },
     { "source": "/styles.css", "destination": "/web/styles.css" },
@@ -25,7 +25,8 @@
     { "source": "/public.js", "destination": "/web/public.js" },
     { "source": "/client.js", "destination": "/web/client.js" },
     { "source": "/prospectos.js", "destination": "/web/prospectos.js" },
-    { "source": "/synkro.js", "destination": "/web/synkro.js" },
-    { "source": "/synkro-leads.js", "destination": "/web/synkro-leads.js" }
+    { "source": "/synkro/app.js", "destination": "/web/synkro/app.js" },
+    { "source": "/synkro/leads.js", "destination": "/web/synkro/leads.js" },
+    { "source": "/synkro/styles.css", "destination": "/web/synkro/styles.css" }
   ]
 }

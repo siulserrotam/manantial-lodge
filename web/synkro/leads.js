@@ -24,12 +24,14 @@ function authHeaders() {
 function buildLeadsUrl() {
   const params = new URLSearchParams();
   if (statusFilter.value) {
-    params.set("estado", statusFilter.value);
+    params.set("status", statusFilter.value);
   }
   const suffix = params.toString();
   return `/api/synkro/leads${suffix ? `?${suffix}` : ""}`;
 }
 
+// ES: Carga leads protegidos usando el token administrativo.
+// EN: Loads protected leads using the administrative token.
 async function loadLeads() {
   if (!adminToken) {
     setAdminMessage("Ingresa el token administrativo.", "error");
@@ -71,37 +73,36 @@ function renderLeads() {
   leadsList.innerHTML = currentLeads.map((lead) => `
     <article class="synkro-lead-card" data-lead-id="${escapeAttribute(lead.id)}">
       <div>
-        <span class="synkro-status">${escapeHtml(lead.estado || "nuevo")}</span>
-        <h3>${escapeHtml(lead.nombre)}</h3>
-        <p>${escapeHtml(lead.empresa || "Empresa sin registrar")}</p>
+        <span class="synkro-status">${escapeHtml(lead.status || "new")}</span>
+        <h3>${escapeHtml(lead.name)}</h3>
+        <p>${escapeHtml(lead.company || "Empresa sin registrar")}</p>
       </div>
       <dl>
         <div><dt>Correo</dt><dd><a href="mailto:${escapeAttribute(lead.email)}">${escapeHtml(lead.email)}</a></dd></div>
-        <div><dt>Celular</dt><dd><a href="https://wa.me/${normalizePhone(lead.celular)}" target="_blank" rel="noopener">${escapeHtml(lead.celular)}</a></dd></div>
-        <div><dt>E-commerce</dt><dd>${escapeHtml(lead.ecommerce || "Sin dato")}</dd></div>
-        <div><dt>ERP</dt><dd>${escapeHtml(lead.erp || "Sin dato")}</dd></div>
-        <div><dt>Pedidos/mes</dt><dd>${Number(lead.pedidos_mes || 0).toLocaleString("es-CO")}</dd></div>
+        <div><dt>Celular</dt><dd><a href="https://wa.me/${normalizePhone(lead.phone)}" target="_blank" rel="noopener">${escapeHtml(lead.phone)}</a></dd></div>
+        <div><dt>E-commerce</dt><dd>${escapeHtml(lead.ecommerce_platform || "Sin dato")}</dd></div>
+        <div><dt>ERP</dt><dd>${escapeHtml(lead.erp_system || "Sin dato")}</dd></div>
+        <div><dt>Pedidos/mes</dt><dd>${Number(lead.monthly_orders || 0).toLocaleString("es-CO")}</dd></div>
       </dl>
-      <p>${escapeHtml(lead.mensaje || "Sin mensaje.")}</p>
+      <p>${escapeHtml(lead.message || "Sin mensaje.")}</p>
       <form class="synkro-lead-form">
         <label>Estado</label>
-        <select name="estado">
-          ${statusOption("nuevo", lead.estado)}
-          ${statusOption("contactado", lead.estado)}
-          ${statusOption("calificado", lead.estado)}
-          ${statusOption("descartado", lead.estado)}
+        <select name="status">
+          ${statusOption("new", lead.status, "Nuevo")}
+          ${statusOption("contacted", lead.status, "Contactado")}
+          ${statusOption("qualified", lead.status, "Calificado")}
+          ${statusOption("discarded", lead.status, "Descartado")}
         </select>
         <label>Nota comercial</label>
-        <textarea name="notaComercial" placeholder="Resumen de llamada, objeciones, proximo paso...">${escapeHtml(lead.nota_comercial || "")}</textarea>
+        <textarea name="commercialNote" placeholder="Resumen de llamada, objeciones, proximo paso...">${escapeHtml(lead.commercial_note || "")}</textarea>
         <button type="submit">Guardar seguimiento</button>
       </form>
     </article>
   `).join("");
 }
 
-function statusOption(value, currentValue) {
+function statusOption(value, currentValue, label) {
   const selected = value === currentValue ? " selected" : "";
-  const label = value.charAt(0).toUpperCase() + value.slice(1);
   return `<option value="${value}"${selected}>${label}</option>`;
 }
 
@@ -110,8 +111,8 @@ async function updateLead(card, form) {
   const formData = new FormData(form);
   const payload = {
     id,
-    estado: String(formData.get("estado") || "").trim(),
-    notaComercial: String(formData.get("notaComercial") || "").trim()
+    status: String(formData.get("status") || "").trim(),
+    commercialNote: String(formData.get("commercialNote") || "").trim()
   };
   const button = form.querySelector("button");
 
