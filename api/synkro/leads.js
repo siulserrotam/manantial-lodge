@@ -1,10 +1,11 @@
 import { supabaseRequest } from "../_supabase.js";
+import { isAdminAuthorized } from "./_security.js";
 
 const VALID_STATUSES = ["new", "contacted", "qualified", "discarded"];
 
 export default async function handler(request, response) {
   if (request.method === "GET") {
-    if (!isAuthorized(request)) {
+    if (!isAdminAuthorized(request)) {
       response.status(401).json({ ok: false, message: "No autorizado." });
       return;
     }
@@ -22,7 +23,7 @@ export default async function handler(request, response) {
   }
 
   if (request.method === "PATCH") {
-    if (!isAuthorized(request)) {
+    if (!isAdminAuthorized(request)) {
       response.status(401).json({ ok: false, message: "No autorizado." });
       return;
     }
@@ -188,18 +189,4 @@ function parseOptionalBoolean(value) {
   }
 
   return ["1", "true", "on", "yes", "si", "sí"].includes(String(value).trim().toLowerCase());
-}
-
-function isAuthorized(request) {
-  // ES: Las lecturas y actualizaciones internas requieren token privado.
-  // EN: Internal reads and updates require a private token.
-  const expectedToken = process.env.SYNKRO_ADMIN_TOKEN;
-
-  if (!expectedToken) {
-    return false;
-  }
-
-  const authorization = request.headers?.authorization || request.headers?.Authorization || "";
-  const token = authorization.replace(/^Bearer\s+/i, "").trim();
-  return token && token === expectedToken;
 }

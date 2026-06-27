@@ -36,29 +36,43 @@ Synkro validates and then builds a B2B SaaS that connects online stores with acc
 - CSV export from the internal leads panel.
 - Simple metrics by status: new, contacted, qualified, discarded.
 
+### Phase 4 - MVP technical architecture
+
+- Multi-tenant model with `synkro_tenants`.
+- API key hash validation for sandbox webhooks.
+- Integration model with `synkro_integrations`.
+- External order model with `synkro_external_orders`.
+- Sync attempt model with `synkro_sync_attempts`.
+- Audit log model with `synkro_audit_logs`.
+- Simulated order webhook: `POST /api/synkro/webhooks/orders`.
+- Internal sync attempts endpoint: `GET /api/synkro/sync-attempts`.
+- Idempotency by tenant plus platform plus external order ID.
+- Documentation in `docs/synkro-mvp-api.md`.
+
 ## Missing
 
 ### Before continuing product work
 
 - Configure `synkro.manantiallodge.com` in Vercel and Hostinger DNS.
-- Execute or update the Supabase schema for `synkro_leads`.
+- Execute or update the Supabase schema for `synkro_leads` and the MVP sync tables.
 - Create `SYNKRO_ADMIN_TOKEN` in Vercel environment variables.
 - Test real lead capture in production.
+- Create a sandbox tenant API key hash for webhook tests.
 - Decide whether Synkro should be indexed or temporarily marked as `noindex`.
 - Adjust ROI assumptions: monthly operator cost, minutes per order, and target subscription price.
 
-### Suggested Phase 4 - MVP technical architecture
+### Suggested Phase 5 - First simulated connector dashboard
 
-- Design webhook contracts for Shopify/WooCommerce.
-- Define base models: Tenant, Integration, ExternalOrder, SyncAttempt, AuditLog.
-- Create an independent backend structure for a future .NET service or decide whether the MVP continues in serverless Node.
-- Define multi-tenant strategy and API key security.
-- Design idempotency by external order before creating real connectors.
+- Add an internal page to visualize sync attempts and audit logs.
+- Add filters by tenant, platform, status, and date.
+- Add a manual retry action for failed attempts.
+- Add a JSON detail drawer for raw order payloads.
+- Keep it protected by `SYNKRO_ADMIN_TOKEN`.
 
-### Suggested Phase 5 - First simulated connector
+### Suggested Phase 6 - Mapping engine
 
-- Create a test webhook endpoint.
-- Store simulated orders in Supabase.
 - Implement an initial mapping engine.
-- Generate audit logs visible to internal users.
+- Normalize customers, taxes, products, and payments.
+- Define product matching by SKU.
+- Define validation errors before ERP submission.
 - Avoid real Siigo integration until the commercial flow is validated.

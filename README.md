@@ -66,6 +66,8 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 /synkro.html       Landing inicial de Synkro
 /api/synkro/leads  Captura leads de Synkro
 /synkro-leads.html Panel interno de seguimiento Synkro
+/api/synkro/webhooks/orders  Webhook sandbox de ordenes Synkro
+/api/synkro/sync-attempts    Consulta interna de intentos Synkro
 ```
 
 ## Modulo de prospectos
@@ -207,7 +209,7 @@ DNS/Vercel:
 3. Confirmar que el deployment de produccion usa la rama produccion.
 ```
 
-Esta fase no incluye todavia la plataforma .NET, multi-tenancy, conectores Shopify/WooCommerce/Siigo, RabbitMQ ni panel privado. Esos puntos quedan para fases posteriores cuando la validacion comercial tenga leads reales.
+Esta fase no incluye todavia la plataforma .NET, conectores reales Shopify/WooCommerce/Siigo, RabbitMQ ni dashboard visual de sincronizaciones. Esos puntos quedan para fases posteriores cuando la validacion comercial tenga leads reales.
 
 La segunda fase agrega seguimiento interno de leads:
 
@@ -236,6 +238,21 @@ erp_validated
 CSV export
 metricas por estado
 ```
+
+La cuarta fase agrega la primera base tecnica del MVP:
+
+```text
+synkro_tenants
+synkro_integrations
+synkro_external_orders
+synkro_sync_attempts
+synkro_audit_logs
+POST /api/synkro/webhooks/orders
+GET /api/synkro/sync-attempts
+idempotencia por tenant + plataforma + orden externa
+```
+
+El contrato de prueba del webhook esta en `docs/synkro-mvp-api.md`.
 
 La guia de configuracion esta en `docs/synkro-setup.md`.
 

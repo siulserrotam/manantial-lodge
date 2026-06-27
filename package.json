@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --check api/prospectos/buscar.js && node --check api/prospectos/exportar.js && node --check api/synkro/leads.js && node --check src/modules/prospectos/prospectos.service.js && node --check web/synkro/app.js && node --check web/synkro/leads.js"
+    "test": "node --check api/prospectos/buscar.js && node --check api/prospectos/exportar.js && node --check api/synkro/leads.js && node --check api/synkro/_security.js && node --check api/synkro/sync-attempts.js && node --check api/synkro/webhooks/orders.js && node --check src/modules/prospectos/prospectos.service.js && node --check web/synkro/app.js && node --check web/synkro/leads.js"
   },
   "dependencies": {
     "axios": "^1.7.9",

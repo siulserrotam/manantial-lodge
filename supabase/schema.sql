@@ -199,6 +199,75 @@ begin
   end if;
 end $$;
 
+create table if not exists public.synkro_tenants (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  api_key_hash text not null unique,
+  status text not null default 'active',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz
+);
+
+create table if not exists public.synkro_integrations (
+  id uuid primary key default gen_random_uuid(),
+  tenant_id uuid not null references public.synkro_tenants(id),
+  provider text not null,
+  direction text not null default 'ecommerce_to_erp',
+  status text not null default 'sandbox',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz,
+  unique (tenant_id, provider)
+);
+
+create table if not exists public.synkro_external_orders (
+  id uuid primary key default gen_random_uuid(),
+  tenant_id uuid not null references public.synkro_tenants(id),
+  integration_id uuid references public.synkro_integrations(id),
+  platform text not null,
+  external_order_id text not null,
+  customer_payload jsonb not null default '{}'::jsonb,
+  items_payload jsonb not null default '[]'::jsonb,
+  subtotal numeric(14,2) not null default 0,
+  tax numeric(14,2) not null default 0,
+  total numeric(14,2) not null default 0,
+  currency text not null default 'COP',
+  status text not null default 'queued',
+  idempotency_key text not null,
+  raw_payload jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz,
+  unique (tenant_id, idempotency_key)
+);
+
+create table if not exists public.synkro_sync_attempts (
+  id uuid primary key default gen_random_uuid(),
+  tenant_id uuid not null references public.synkro_tenants(id),
+  external_order_id uuid not null references public.synkro_external_orders(id),
+  status text not null default 'queued',
+  message text,
+  attempt_number integer not null default 1,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.synkro_audit_logs (
+  id uuid primary key default gen_random_uuid(),
+  tenant_id uuid not null references public.synkro_tenants(id),
+  external_order_id uuid references public.synkro_external_orders(id),
+  event_type text not null,
+  message text not null,
+  metadata jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists synkro_external_orders_tenant_created_idx
+  on public.synkro_external_orders (tenant_id, created_at desc);
+
+create index if not exists synkro_sync_attempts_tenant_created_idx
+  on public.synkro_sync_attempts (tenant_id, created_at desc);
+
+create index if not exists synkro_audit_logs_order_created_idx
+  on public.synkro_audit_logs (external_order_id, created_at desc);
+
 insert into public.inventario (nombre, categoria, unidad, cantidad, valor_compra)
 values
   ('Carne para sancocho', 'comida', 'porcion', 20, 0),

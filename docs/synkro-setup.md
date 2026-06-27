@@ -46,6 +46,8 @@ SYNKRO_ADMIN_TOKEN=<a-long-private-token>
 
 6. Redeploy production after adding the variable.
 
+The sandbox webhook does not need a Vercel environment variable for each tenant. Tenant keys are stored as SHA-256 hashes in Supabase.
+
 ## Supabase
 
 Run the Synkro block from `supabase/schema.sql`.
@@ -56,6 +58,11 @@ Expected table:
 
 ```text
 public.synkro_leads
+public.synkro_tenants
+public.synkro_integrations
+public.synkro_external_orders
+public.synkro_sync_attempts
+public.synkro_audit_logs
 ```
 
 Main columns:
@@ -82,6 +89,19 @@ created_at
 updated_at
 ```
 
+Create a sandbox tenant API key:
+
+```sql
+insert into public.synkro_tenants (name, api_key_hash)
+values (
+  'Demo tenant',
+  encode(digest('synkro_demo_api_key', 'sha256'), 'hex')
+)
+on conflict (api_key_hash) do nothing;
+```
+
+Use the plain value `synkro_demo_api_key` only when testing the webhook request header.
+
 ## Validation
 
 Public landing:
@@ -99,6 +119,20 @@ https://studios.manantiallodge.com/synkro-leads.html
 
 Use the same value configured in `SYNKRO_ADMIN_TOKEN` as the administrative token.
 
+Sandbox order webhook:
+
+```text
+POST https://studios.manantiallodge.com/api/synkro/webhooks/orders
+Header: x-synkro-api-key: synkro_demo_api_key
+```
+
+Internal sync attempts:
+
+```text
+GET https://studios.manantiallodge.com/api/synkro/sync-attempts
+Header: Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
+```
+
 ## Current file isolation
 
 ```text
@@ -108,8 +142,12 @@ web/synkro/leads.html
 web/synkro/leads.js
 web/synkro/styles.css
 api/synkro/leads.js
+api/synkro/_security.js
+api/synkro/sync-attempts.js
+api/synkro/webhooks/orders.js
 docs/synkro-phases.md
 docs/synkro-setup.md
+docs/synkro-mvp-api.md
 ```
 
 The compatibility URLs `/synkro.html` and `/synkro-leads.html` are kept through Vercel rewrites.
