@@ -29,6 +29,7 @@
     { "source": "/synkro/app.js", "destination": "/web/synkro/app.js" },
     { "source": "/synkro/leads.js", "destination": "/web/synkro/leads.js" },
     { "source": "/synkro/sync.js", "destination": "/web/synkro/sync.js" },
-    { "source": "/synkro/styles.css", "destination": "/web/synkro/styles.css" }
+    { "source": "/synkro/styles.css", "destination": "/web/synkro/styles.css" },
+    { "source": "/api/synkro/webhooks/orders", "destination": "/api/synkro/orders" }
   ]
 }

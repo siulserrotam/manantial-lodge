@@ -67,6 +67,7 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 /api/synkro/leads  Captura leads de Synkro
 /synkro-leads.html Panel interno de seguimiento Synkro
 /api/synkro/webhooks/orders  Webhook sandbox de ordenes Synkro
+/api/synkro/orders           Funcion interna compatible del webhook
 /api/synkro/sync-attempts    Consulta interna de intentos Synkro
 /api/synkro/audit-logs       Consulta interna de auditoria Synkro
 /synkro-sync.html            Tablero interno de sincronizaciones Synkro

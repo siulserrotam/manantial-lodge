@@ -1,5 +1,5 @@
-import { supabaseRequest } from "../../_supabase.js";
-import { getTenantFromApiKey } from "../_security.js";
+import { supabaseRequest } from "../_supabase.js";
+import { getTenantFromApiKey } from "./_security.js";
 
 const MAX_ITEMS = 100;
 

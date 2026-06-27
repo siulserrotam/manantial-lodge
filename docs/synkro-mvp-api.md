@@ -35,6 +35,8 @@ on conflict (api_key_hash) do nothing;
 POST /api/synkro/webhooks/orders
 ```
 
+Vercel internally rewrites that public URL to the flatter serverless function `/api/synkro/orders`.
+
 Required header:
 
 ```text
