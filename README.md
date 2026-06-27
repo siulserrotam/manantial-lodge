@@ -28,11 +28,14 @@ ADMIN_USER
 ADMIN_PASSWORD
 SUPABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
+SYNKRO_ADMIN_TOKEN
 ```
 
 `ADMIN_USER` y `ADMIN_PASSWORD` permiten entrar al panel si Supabase aun no tiene usuarios.
 
 `SUPABASE_SERVICE_ROLE_KEY` es privada. No debe ir en archivos JavaScript publicos ni en GitHub.
+
+`SYNKRO_ADMIN_TOKEN` protege la consulta y actualizacion interna de leads de Synkro.
 
 ## Preparar Supabase
 
@@ -62,6 +65,7 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 /api/prospectos/exportar  Exporta prospectos a Excel
 /synkro.html       Landing inicial de Synkro
 /api/synkro/leads  Captura leads de Synkro
+/synkro-leads.html Panel interno de seguimiento Synkro
 ```
 
 ## Modulo de prospectos
@@ -166,6 +170,7 @@ Synkro es una validacion inicial para un producto SaaS B2B que conectara tiendas
 synkro.manantiallodge.com -> /web/synkro.html
 /synkro.html              -> landing local/manual
 /api/synkro/leads         -> captura de leads en Supabase
+/synkro-leads.html        -> seguimiento interno de leads
 ```
 
 La landing incluye:
@@ -195,6 +200,23 @@ DNS/Vercel:
 ```
 
 Esta fase no incluye todavia la plataforma .NET, multi-tenancy, conectores Shopify/WooCommerce/Siigo, RabbitMQ ni panel privado. Esos puntos quedan para fases posteriores cuando la validacion comercial tenga leads reales.
+
+La segunda fase agrega seguimiento interno de leads:
+
+```text
+GET /api/synkro/leads
+PATCH /api/synkro/leads
+```
+
+Ambos requieren header:
+
+```text
+Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
+```
+
+La pagina `/synkro-leads.html` permite pegar el token, filtrar leads por estado, cambiar estado y guardar nota comercial.
+
+El resumen vivo de fases esta en `docs/synkro-fases.md`.
 
 ## Nota sobre Delphi
 

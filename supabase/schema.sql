@@ -111,10 +111,16 @@ create table if not exists public.synkro_leads (
   erp text,
   pedidos_mes integer not null default 0,
   mensaje text,
+  nota_comercial text,
   origen text not null default 'synkro_landing',
   estado text not null default 'nuevo',
-  creado_en timestamptz not null default now()
+  creado_en timestamptz not null default now(),
+  actualizado_en timestamptz
 );
+
+alter table public.synkro_leads
+  add column if not exists nota_comercial text,
+  add column if not exists actualizado_en timestamptz;
 
 insert into public.inventario (nombre, categoria, unidad, cantidad, valor_compra)
 values

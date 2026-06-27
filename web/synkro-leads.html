@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Leads Synkro | Manantial Studio</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="synkro-admin-shell">
+      <header class="synkro-admin-header">
+        <a class="synkro-brand" href="/synkro.html" aria-label="Volver a Synkro">
+          <span>S</span>
+          <strong>Synkro</strong>
+        </a>
+        <div>
+          <p class="synkro-kicker">Fase 2</p>
+          <h1>Seguimiento de leads</h1>
+          <p>Consulta solicitudes, clasifica oportunidades y deja notas comerciales para priorizar la validacion.</p>
+        </div>
+      </header>
+
+      <section class="synkro-admin-panel" aria-labelledby="access-title">
+        <h2 id="access-title">Acceso interno</h2>
+        <form id="synkro-token-form" class="synkro-token-form">
+          <label for="synkro-token">Token administrativo</label>
+          <input id="synkro-token" name="token" type="password" autocomplete="off" required>
+
+          <label for="synkro-status-filter">Estado</label>
+          <select id="synkro-status-filter" name="estado">
+            <option value="">Todos</option>
+            <option value="nuevo">Nuevo</option>
+            <option value="contactado">Contactado</option>
+            <option value="calificado">Calificado</option>
+            <option value="descartado">Descartado</option>
+          </select>
+
+          <button type="submit">Cargar leads</button>
+        </form>
+        <p id="synkro-admin-message" class="message" role="status"></p>
+      </section>
+
+      <section class="synkro-admin-panel" aria-labelledby="leads-title">
+        <div class="prospect-results-head">
+          <div>
+            <h2 id="leads-title">Leads registrados</h2>
+            <p id="synkro-leads-summary" class="muted">Ingresa el token para consultar.</p>
+          </div>
+          <button id="synkro-refresh" class="secondary-button" type="button" disabled>Actualizar</button>
+        </div>
+
+        <div id="synkro-leads-list" class="synkro-leads-list">
+          <article>
+            <p class="muted">No hay datos cargados.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="synkro-leads.js"></script>
+  </body>
+</html>
