@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sincronizaciones Synkro | Manantial Studio</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/synkro/styles.css">
+  </head>
+  <body>
+    <main class="synkro-admin-shell">
+      <header class="synkro-admin-header">
+        <nav class="synkro-admin-nav" aria-label="Navegacion interna Synkro">
+          <a class="synkro-brand" href="/synkro.html" aria-label="Volver a Synkro">
+            <span>S</span>
+            <strong>Synkro</strong>
+          </a>
+          <div>
+            <a href="/synkro-leads.html">Leads</a>
+            <a aria-current="page" href="/synkro-sync.html">Sincronizaciones</a>
+          </div>
+        </nav>
+        <div>
+          <p class="synkro-kicker">Fase 5</p>
+          <h1>Tablero de sincronizaciones</h1>
+          <p>Revisa ordenes recibidas, intentos de sincronizacion, auditoria y payloads del sandbox tecnico.</p>
+        </div>
+      </header>
+
+      <section class="synkro-admin-panel" aria-labelledby="sync-access-title">
+        <h2 id="sync-access-title">Acceso interno</h2>
+        <form id="synkro-sync-form" class="synkro-sync-form">
+          <label for="synkro-sync-token">Token administrativo</label>
+          <input id="synkro-sync-token" name="token" type="password" autocomplete="off" required>
+
+          <label for="synkro-sync-status">Estado</label>
+          <select id="synkro-sync-status" name="status">
+            <option value="">Todos</option>
+            <option value="queued">En cola</option>
+            <option value="processing">Procesando</option>
+            <option value="success">Exitoso</option>
+            <option value="failed">Fallido</option>
+          </select>
+
+          <label for="synkro-sync-platform">Plataforma</label>
+          <input id="synkro-sync-platform" name="platform" placeholder="shopify, woocommerce">
+
+          <label for="synkro-sync-date">Desde</label>
+          <input id="synkro-sync-date" name="date" type="date">
+
+          <button type="submit">Cargar tablero</button>
+        </form>
+        <p id="synkro-sync-message" class="message" role="status"></p>
+      </section>
+
+      <section class="synkro-admin-panel" aria-labelledby="sync-title">
+        <div class="prospect-results-head">
+          <div>
+            <h2 id="sync-title">Intentos registrados</h2>
+            <p id="synkro-sync-summary" class="muted">Ingresa el token para consultar.</p>
+          </div>
+          <div class="prospect-actions">
+            <button id="synkro-sync-export" class="secondary-button" type="button" disabled>Exportar CSV</button>
+            <button id="synkro-sync-refresh" class="secondary-button" type="button" disabled>Actualizar</button>
+          </div>
+        </div>
+
+        <div id="synkro-sync-metrics" class="synkro-lead-metrics" aria-label="Metricas de sincronizacion">
+          <article><span>En cola</span><strong>0</strong></article>
+          <article><span>Procesando</span><strong>0</strong></article>
+          <article><span>Exitosos</span><strong>0</strong></article>
+          <article><span>Fallidos</span><strong>0</strong></article>
+        </div>
+
+        <div id="synkro-sync-list" class="synkro-sync-list">
+          <article>
+            <p class="muted">No hay datos cargados.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="synkro-sync-dialog" class="synkro-sync-dialog">
+      <form method="dialog">
+        <button class="secondary-button" value="close">Cerrar</button>
+      </form>
+      <div id="synkro-sync-detail"></div>
+    </dialog>
+
+    <script src="/synkro/sync.js"></script>
+  </body>
+</html>

@@ -68,6 +68,8 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 /synkro-leads.html Panel interno de seguimiento Synkro
 /api/synkro/webhooks/orders  Webhook sandbox de ordenes Synkro
 /api/synkro/sync-attempts    Consulta interna de intentos Synkro
+/api/synkro/audit-logs       Consulta interna de auditoria Synkro
+/synkro-sync.html            Tablero interno de sincronizaciones Synkro
 ```
 
 ## Modulo de prospectos
@@ -253,6 +255,17 @@ idempotencia por tenant + plataforma + orden externa
 ```
 
 El contrato de prueba del webhook esta en `docs/synkro-mvp-api.md`.
+
+La quinta fase agrega el tablero interno de sincronizaciones:
+
+```text
+/synkro-sync.html
+GET /api/synkro/audit-logs
+filtros por estado, plataforma y fecha
+detalle JSON de orden recibida
+auditoria por orden
+exportacion CSV de intentos
+```
 
 La guia de configuracion esta en `docs/synkro-setup.md`.
 

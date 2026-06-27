@@ -119,6 +119,14 @@ https://studios.manantiallodge.com/synkro-leads.html
 
 Use the same value configured in `SYNKRO_ADMIN_TOKEN` as the administrative token.
 
+Internal sync dashboard:
+
+```text
+https://studios.manantiallodge.com/synkro-sync.html
+```
+
+Use the same `SYNKRO_ADMIN_TOKEN`. The dashboard shows the orders received by the sandbox webhook and their audit events.
+
 Sandbox order webhook:
 
 ```text
@@ -133,6 +141,13 @@ GET https://studios.manantiallodge.com/api/synkro/sync-attempts
 Header: Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
 ```
 
+Internal audit logs:
+
+```text
+GET https://studios.manantiallodge.com/api/synkro/audit-logs?externalOrderId=<order_uuid>
+Header: Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
+```
+
 ## Current file isolation
 
 ```text
@@ -140,9 +155,12 @@ web/synkro/index.html
 web/synkro/app.js
 web/synkro/leads.html
 web/synkro/leads.js
+web/synkro/sync.html
+web/synkro/sync.js
 web/synkro/styles.css
 api/synkro/leads.js
 api/synkro/_security.js
+api/synkro/audit-logs.js
 api/synkro/sync-attempts.js
 api/synkro/webhooks/orders.js
 docs/synkro-phases.md

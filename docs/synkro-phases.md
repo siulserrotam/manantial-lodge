@@ -49,6 +49,18 @@ Synkro validates and then builds a B2B SaaS that connects online stores with acc
 - Idempotency by tenant plus platform plus external order ID.
 - Documentation in `docs/synkro-mvp-api.md`.
 
+### Phase 5 - Internal sync dashboard
+
+- Internal page `web/synkro/sync.html`.
+- Compatibility URL `/synkro-sync.html`.
+- Internal navigation between leads and sync attempts.
+- Protected audit endpoint `GET /api/synkro/audit-logs`.
+- Sync dashboard filters by status, platform, and date.
+- Metrics for queued, processing, success, and failed attempts.
+- JSON detail view for normalized order payloads.
+- Audit event view per external order.
+- CSV export for sync attempts.
+
 ## Missing
 
 ### Before continuing product work
@@ -61,15 +73,14 @@ Synkro validates and then builds a B2B SaaS that connects online stores with acc
 - Decide whether Synkro should be indexed or temporarily marked as `noindex`.
 - Adjust ROI assumptions: monthly operator cost, minutes per order, and target subscription price.
 
-### Suggested Phase 5 - First simulated connector dashboard
+### Suggested Phase 6 - Retry and status operations
 
-- Add an internal page to visualize sync attempts and audit logs.
-- Add filters by tenant, platform, status, and date.
-- Add a manual retry action for failed attempts.
-- Add a JSON detail drawer for raw order payloads.
-- Keep it protected by `SYNKRO_ADMIN_TOKEN`.
+- Add a protected retry endpoint for failed attempts.
+- Allow marking attempts as `processing`, `success`, or `failed`.
+- Record every manual operation in `synkro_audit_logs`.
+- Add status badges with failure reasons in the dashboard.
 
-### Suggested Phase 6 - Mapping engine
+### Suggested Phase 7 - Mapping engine
 
 - Implement an initial mapping engine.
 - Normalize customers, taxes, products, and payments.

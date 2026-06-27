@@ -100,6 +100,26 @@ tenantId=<uuid>
 limit=50
 ```
 
+## Internal audit logs endpoint
+
+```text
+GET /api/synkro/audit-logs?externalOrderId=<order_uuid>
+```
+
+Required header:
+
+```text
+Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
+```
+
+## Internal dashboard
+
+```text
+https://studios.manantiallodge.com/synkro-sync.html
+```
+
+Use the same administrative token. The dashboard lets you filter sync attempts, inspect normalized order JSON, review audit events, and export CSV.
+
 ## Production test with curl
 
 ```bash
