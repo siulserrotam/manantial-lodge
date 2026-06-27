@@ -277,6 +277,33 @@
   gap: 14px;
 }
 
+.synkro-lead-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.synkro-lead-metrics article {
+  padding: 16px;
+  border-radius: 8px;
+  background: #eef7f6;
+}
+
+.synkro-lead-metrics span {
+  color: #0d7c72;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.synkro-lead-metrics strong {
+  display: block;
+  margin-top: 8px;
+  color: #10232c;
+  font-size: 2rem;
+}
+
 .synkro-lead-card {
   display: grid;
   gap: 16px;
@@ -331,7 +358,7 @@
 }
 
 .synkro-lead-form {
-  grid-template-columns: minmax(180px, 0.35fr) minmax(260px, 1fr) auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: end;
 }
 
@@ -341,10 +368,45 @@
 
 .synkro-lead-form textarea {
   min-height: 46px;
+  grid-column: span 3;
 }
 
 .synkro-lead-form button {
   margin: 0;
+}
+
+.synkro-validation-flags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  min-height: 46px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #d7e1e2;
+  border-radius: 8px;
+  background: white;
+}
+
+.synkro-validation-flags legend {
+  padding: 0 6px;
+  color: #10232c;
+  font-weight: 700;
+}
+
+.synkro-validation-flags label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #5f6e73;
+  font-weight: 700;
+}
+
+.synkro-validation-flags input {
+  width: 18px;
+  min-height: 18px;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 820px) {
@@ -382,7 +444,12 @@
 
   .synkro-token-form,
   .synkro-lead-form,
+  .synkro-lead-metrics,
   .synkro-lead-card dl {
     grid-template-columns: 1fr;
+  }
+
+  .synkro-lead-form textarea {
+    grid-column: auto;
   }
 }

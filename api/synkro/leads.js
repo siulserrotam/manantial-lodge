@@ -31,6 +31,12 @@ export default async function handler(request, response) {
     const id = String(body.id || "").trim();
     const status = normalizeStatus(body.status || body.estado || "");
     const commercialNote = String(body.commercialNote || body.commercial_note || body.notaComercial || body.nota_comercial || "").trim();
+    const score = parseOptionalInteger(body.score);
+    const urgency = normalizeUrgency(body.urgency || body.urgencia || "");
+    const owner = String(body.owner || body.responsable || "").trim();
+    const nextContactAt = String(body.nextContactAt || body.next_contact_at || body.proximo_contacto || "").trim();
+    const ecommerceValidated = parseOptionalBoolean(body.ecommerceValidated ?? body.ecommerce_validated);
+    const erpValidated = parseOptionalBoolean(body.erpValidated ?? body.erp_validated);
 
     if (!id) {
       response.status(400).json({ ok: false, message: "Falta el ID del lead." });
@@ -39,6 +45,11 @@ export default async function handler(request, response) {
 
     if (status && !VALID_STATUSES.includes(status)) {
       response.status(400).json({ ok: false, message: "Estado no valido." });
+      return;
+    }
+
+    if (urgency && !["low", "medium", "high"].includes(urgency)) {
+      response.status(400).json({ ok: false, message: "Urgencia no valida." });
       return;
     }
 
@@ -52,6 +63,30 @@ export default async function handler(request, response) {
 
     if (commercialNote) {
       payload.commercial_note = commercialNote;
+    }
+
+    if (score !== null) {
+      payload.score = Math.max(0, Math.min(score, 100));
+    }
+
+    if (urgency) {
+      payload.urgency = urgency;
+    }
+
+    if (owner) {
+      payload.owner = owner;
+    }
+
+    if (nextContactAt) {
+      payload.next_contact_at = nextContactAt;
+    }
+
+    if (ecommerceValidated !== null) {
+      payload.ecommerce_validated = ecommerceValidated;
+    }
+
+    if (erpValidated !== null) {
+      payload.erp_validated = erpValidated;
     }
 
     try {
@@ -122,6 +157,37 @@ function normalizeStatus(value) {
   };
   const status = String(value || "").trim();
   return statusMap[status] || status;
+}
+
+function normalizeUrgency(value) {
+  const urgencyMap = {
+    baja: "low",
+    media: "medium",
+    alta: "high"
+  };
+  const urgency = String(value || "").trim();
+  return urgencyMap[urgency] || urgency;
+}
+
+function parseOptionalInteger(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.round(number) : null;
+}
+
+function parseOptionalBoolean(value) {
+  if (value === undefined || value === null || value === "") {
+    return null;
+  }
+
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  return ["1", "true", "on", "yes", "si", "sí"].includes(String(value).trim().toLowerCase());
 }
 
 function isAuthorized(request) {

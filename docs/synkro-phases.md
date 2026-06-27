@@ -26,6 +26,16 @@ Synkro validates and then builds a B2B SaaS that connects online stores with acc
 - Follow-up fields in Supabase: `commercial_note` and `updated_at`.
 - Synkro web files isolated under `web/synkro/`.
 
+### Phase 3 - Opportunity qualification
+
+- Lead scoring with `score` from 0 to 100.
+- Urgency levels: `low`, `medium`, `high`.
+- Commercial owner field.
+- Next contact date.
+- E-commerce and ERP validation flags.
+- CSV export from the internal leads panel.
+- Simple metrics by status: new, contacted, qualified, discarded.
+
 ## Missing
 
 ### Before continuing product work
@@ -36,13 +46,6 @@ Synkro validates and then builds a B2B SaaS that connects online stores with acc
 - Test real lead capture in production.
 - Decide whether Synkro should be indexed or temporarily marked as `noindex`.
 - Adjust ROI assumptions: monthly operator cost, minutes per order, and target subscription price.
-
-### Suggested Phase 3 - Opportunity qualification
-
-- Add lead scoring fields: urgency, volume, validated ERP, validated e-commerce platform, commercial owner, and next contact date.
-- Export leads to CSV.
-- Add source/campaign tracking.
-- Create simple metrics: new, contacted, qualified, discarded.
 
 ### Suggested Phase 4 - MVP technical architecture
 

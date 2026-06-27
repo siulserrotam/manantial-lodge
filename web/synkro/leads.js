@@ -5,6 +5,8 @@ const message = document.querySelector("#synkro-admin-message");
 const leadsSummary = document.querySelector("#synkro-leads-summary");
 const leadsList = document.querySelector("#synkro-leads-list");
 const refreshButton = document.querySelector("#synkro-refresh");
+const exportButton = document.querySelector("#synkro-export");
+const metricsContainer = document.querySelector("#synkro-lead-metrics");
 
 let adminToken = "";
 let currentLeads = [];
@@ -53,13 +55,30 @@ async function loadLeads() {
 
     currentLeads = result.leads || [];
     renderLeads();
+    renderMetrics();
     setAdminMessage("Leads cargados.", "ok");
     refreshButton.disabled = false;
+    exportButton.disabled = currentLeads.length === 0;
   } catch (error) {
     leadsList.innerHTML = '<article><p class="muted">No se pudieron cargar leads.</p></article>';
     leadsSummary.textContent = "Revisa el token o intenta de nuevo.";
     setAdminMessage(error.message, "error");
+    exportButton.disabled = true;
   }
+}
+
+function renderMetrics() {
+  const totals = currentLeads.reduce((summary, lead) => {
+    summary[lead.status || "new"] = (summary[lead.status || "new"] || 0) + 1;
+    return summary;
+  }, {});
+
+  metricsContainer.innerHTML = `
+    <article><span>Nuevos</span><strong>${totals.new || 0}</strong></article>
+    <article><span>Contactados</span><strong>${totals.contacted || 0}</strong></article>
+    <article><span>Calificados</span><strong>${totals.qualified || 0}</strong></article>
+    <article><span>Descartados</span><strong>${totals.discarded || 0}</strong></article>
+  `;
 }
 
 function renderLeads() {
@@ -93,6 +112,23 @@ function renderLeads() {
           ${statusOption("qualified", lead.status, "Calificado")}
           ${statusOption("discarded", lead.status, "Descartado")}
         </select>
+        <label>Score</label>
+        <input name="score" type="number" min="0" max="100" value="${Number(lead.score || 0)}">
+        <label>Urgencia</label>
+        <select name="urgency">
+          ${urgencyOption("low", lead.urgency, "Baja")}
+          ${urgencyOption("medium", lead.urgency, "Media")}
+          ${urgencyOption("high", lead.urgency, "Alta")}
+        </select>
+        <label>Responsable</label>
+        <input name="owner" value="${escapeAttribute(lead.owner || "")}" placeholder="Nombre comercial">
+        <label>Proximo contacto</label>
+        <input name="nextContactAt" type="date" value="${escapeAttribute(lead.next_contact_at || "")}">
+        <fieldset class="synkro-validation-flags">
+          <legend>Validaciones</legend>
+          <label><input type="checkbox" name="ecommerceValidated" value="1"${lead.ecommerce_validated ? " checked" : ""}> E-commerce validado</label>
+          <label><input type="checkbox" name="erpValidated" value="1"${lead.erp_validated ? " checked" : ""}> ERP validado</label>
+        </fieldset>
         <label>Nota comercial</label>
         <textarea name="commercialNote" placeholder="Resumen de llamada, objeciones, proximo paso...">${escapeHtml(lead.commercial_note || "")}</textarea>
         <button type="submit">Guardar seguimiento</button>
@@ -106,12 +142,23 @@ function statusOption(value, currentValue, label) {
   return `<option value="${value}"${selected}>${label}</option>`;
 }
 
+function urgencyOption(value, currentValue, label) {
+  const selected = value === (currentValue || "medium") ? " selected" : "";
+  return `<option value="${value}"${selected}>${label}</option>`;
+}
+
 async function updateLead(card, form) {
   const id = card.dataset.leadId;
   const formData = new FormData(form);
   const payload = {
     id,
     status: String(formData.get("status") || "").trim(),
+    score: String(formData.get("score") || "0").trim(),
+    urgency: String(formData.get("urgency") || "medium").trim(),
+    owner: String(formData.get("owner") || "").trim(),
+    nextContactAt: String(formData.get("nextContactAt") || "").trim(),
+    ecommerceValidated: formData.get("ecommerceValidated") ? "1" : "0",
+    erpValidated: formData.get("erpValidated") ? "1" : "0",
     commercialNote: String(formData.get("commercialNote") || "").trim()
   };
   const button = form.querySelector("button");
@@ -138,6 +185,45 @@ async function updateLead(card, form) {
   } finally {
     button.disabled = false;
   }
+}
+
+function exportLeadsCsv() {
+  if (!currentLeads.length) return;
+
+  const headers = [
+    "name",
+    "email",
+    "phone",
+    "company",
+    "ecommerce_platform",
+    "erp_system",
+    "monthly_orders",
+    "status",
+    "score",
+    "urgency",
+    "owner",
+    "next_contact_at",
+    "ecommerce_validated",
+    "erp_validated",
+    "commercial_note",
+    "created_at"
+  ];
+  const rows = currentLeads.map((lead) => headers.map((header) => csvCell(lead[header])).join(","));
+  const csv = [headers.join(","), ...rows].join("\r\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "synkro-leads.csv";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  return `"${text.replace(/"/g, '""')}"`;
 }
 
 function escapeHtml(value) {
@@ -170,6 +256,7 @@ statusFilter.addEventListener("change", () => {
 });
 
 refreshButton.addEventListener("click", loadLeads);
+exportButton.addEventListener("click", exportLeadsCsv);
 
 leadsList.addEventListener("submit", (event) => {
   event.preventDefault();

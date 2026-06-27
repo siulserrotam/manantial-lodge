@@ -224,6 +224,19 @@ Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
 
 La pagina `/synkro-leads.html` permite pegar el token, filtrar leads por estado, cambiar estado y guardar nota comercial.
 
+La tercera fase agrega calificacion comercial:
+
+```text
+score 0-100
+urgency low/medium/high
+owner
+next_contact_at
+ecommerce_validated
+erp_validated
+CSV export
+metricas por estado
+```
+
 La guia de configuracion esta en `docs/synkro-setup.md`.
 
 El resumen vivo de fases esta en `docs/synkro-phases.md`.

@@ -70,6 +70,12 @@ erp_system
 monthly_orders
 message
 commercial_note
+score
+urgency
+owner
+next_contact_at
+ecommerce_validated
+erp_validated
 source
 status
 created_at

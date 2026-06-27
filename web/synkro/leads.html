@@ -48,7 +48,17 @@
             <h2 id="leads-title">Leads registrados</h2>
             <p id="synkro-leads-summary" class="muted">Ingresa el token para consultar.</p>
           </div>
-          <button id="synkro-refresh" class="secondary-button" type="button" disabled>Actualizar</button>
+          <div class="prospect-actions">
+            <button id="synkro-export" class="secondary-button" type="button" disabled>Exportar CSV</button>
+            <button id="synkro-refresh" class="secondary-button" type="button" disabled>Actualizar</button>
+          </div>
+        </div>
+
+        <div id="synkro-lead-metrics" class="synkro-lead-metrics" aria-label="Metricas de leads">
+          <article><span>Nuevos</span><strong>0</strong></article>
+          <article><span>Contactados</span><strong>0</strong></article>
+          <article><span>Calificados</span><strong>0</strong></article>
+          <article><span>Descartados</span><strong>0</strong></article>
         </div>
 
         <div id="synkro-leads-list" class="synkro-leads-list">
