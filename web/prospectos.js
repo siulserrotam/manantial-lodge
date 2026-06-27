@@ -4,9 +4,14 @@ const prospectSummary = document.querySelector("#prospect-summary");
 const prospectRows = document.querySelector("#prospect-rows");
 const csvButton = document.querySelector("#prospect-csv");
 const excelButton = document.querySelector("#prospect-excel");
+const prevButton = document.querySelector("#prospect-prev");
+const nextButton = document.querySelector("#prospect-next");
+const pageLabel = document.querySelector("#prospect-page");
 
 let currentProspectos = [];
 let currentQuery = null;
+let currentPage = 1;
+const pageSize = 20;
 
 function setProspectMessage(text, type = "") {
   prospectMessage.textContent = text;
@@ -18,23 +23,34 @@ function buildQueryFromForm() {
   return {
     tipo: String(formData.get("tipo") || "").trim(),
     pais: String(formData.get("pais") || "").trim(),
+    departamento: String(formData.get("departamento") || "").trim(),
     ciudad: String(formData.get("ciudad") || "").trim(),
-    limite: String(formData.get("limite") || "50").trim()
+    limite: String(formData.get("limite") || "50").trim(),
+    soloConTelefono: formData.get("soloConTelefono") ? "1" : "",
+    soloConCorreo: formData.get("soloConCorreo") ? "1" : "",
+    soloConWeb: formData.get("soloConWeb") ? "1" : ""
   };
 }
 
 function buildSearchParams(query) {
-  return new URLSearchParams({
-    tipo: query.tipo,
-    pais: query.pais,
-    ciudad: query.ciudad,
-    limite: query.limite
+  const params = new URLSearchParams();
+  Object.entries(query).forEach(([key, value]) => {
+    if (value) {
+      params.set(key, value);
+    }
   });
+  return params;
 }
 
-function renderProspectos(prospectos) {
+function renderProspectos() {
+  const totalPages = Math.max(1, Math.ceil(currentProspectos.length / pageSize));
+  currentPage = Math.min(currentPage, totalPages);
+  const start = (currentPage - 1) * pageSize;
+  const prospectos = currentProspectos.slice(start, start + pageSize);
+
   if (!prospectos.length) {
     prospectRows.innerHTML = '<tr><td colspan="7">No se encontraron negocios para esta busqueda.</td></tr>';
+    updatePagination();
     return;
   }
 
@@ -52,6 +68,7 @@ function renderProspectos(prospectos) {
       <td>${buildMapLink(prospecto)}</td>
     </tr>
   `).join("");
+  updatePagination();
 }
 
 function buildMapLink(prospecto) {
@@ -66,6 +83,13 @@ function buildMapLink(prospecto) {
 function toggleExports(enabled) {
   csvButton.disabled = !enabled;
   excelButton.disabled = !enabled;
+}
+
+function updatePagination() {
+  const totalPages = Math.max(1, Math.ceil(currentProspectos.length / pageSize));
+  pageLabel.textContent = `Pagina ${currentPage} de ${totalPages}`;
+  prevButton.disabled = currentPage <= 1;
+  nextButton.disabled = currentPage >= totalPages || currentProspectos.length === 0;
 }
 
 function downloadCsv() {
@@ -91,7 +115,7 @@ function downloadCsv() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `prospectos-${safeFilePart(currentQuery.tipo)}-${safeFilePart(currentQuery.ciudad)}.csv`;
+  link.download = `prospectos-${safeFilePart(currentQuery.tipo)}-${safeFilePart(currentQuery.ciudad || currentQuery.departamento)}.csv`;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -134,13 +158,14 @@ prospectForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const query = buildQueryFromForm();
 
-  if (!query.tipo || !query.ciudad) {
-    setProspectMessage("Selecciona una categoria e ingresa una ciudad o departamento.", "error");
+  if (!query.tipo || (!query.ciudad && !query.departamento)) {
+    setProspectMessage("Digita una categoria y al menos una ciudad o departamento.", "error");
     return;
   }
 
   currentQuery = query;
   currentProspectos = [];
+  currentPage = 1;
   toggleExports(false);
   prospectRows.innerHTML = '<tr><td colspan="7">Buscando negocios...</td></tr>';
   prospectSummary.textContent = "Consultando OpenStreetMap y sitios web publicos.";
@@ -156,8 +181,8 @@ prospectForm.addEventListener("submit", async (event) => {
     }
 
     currentProspectos = result.prospectos || [];
-    renderProspectos(currentProspectos);
-    prospectSummary.textContent = `${currentProspectos.length} negocio${currentProspectos.length === 1 ? "" : "s"} encontrado${currentProspectos.length === 1 ? "" : "s"} para ${query.tipo} en ${query.ciudad}.`;
+    renderProspectos();
+    prospectSummary.textContent = `${currentProspectos.length} negocio${currentProspectos.length === 1 ? "" : "s"} encontrado${currentProspectos.length === 1 ? "" : "s"} para ${query.tipo} en ${query.ciudad || query.departamento}.`;
     setProspectMessage("Busqueda completada.", "ok");
     toggleExports(currentProspectos.length > 0);
   } catch (error) {
@@ -171,3 +196,11 @@ prospectForm.addEventListener("submit", async (event) => {
 
 csvButton.addEventListener("click", downloadCsv);
 excelButton.addEventListener("click", downloadExcel);
+prevButton.addEventListener("click", () => {
+  currentPage = Math.max(1, currentPage - 1);
+  renderProspectos();
+});
+nextButton.addEventListener("click", () => {
+  currentPage += 1;
+  renderProspectos();
+});

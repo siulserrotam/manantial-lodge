@@ -29,28 +29,40 @@
 
         <form id="prospect-form" class="prospect-form">
           <label for="prospect-type">Categoria</label>
-          <select id="prospect-type" name="tipo" required>
-            <option value="glamping">Glamping</option>
-            <option value="lavanderia">Lavanderias</option>
-            <option value="restaurantes campestres">Restaurantes campestres</option>
-            <option value="hoteles campestres">Hoteles campestres</option>
-            <option value="veterinaria">Veterinarias</option>
-            <option value="hotel">Hoteles</option>
-            <option value="restaurante">Restaurantes</option>
-          </select>
+          <input id="prospect-type" name="tipo" list="prospect-type-options" value="glamping" placeholder="Glamping, cafe, spa, ferreteria..." required>
+          <datalist id="prospect-type-options">
+            <option value="glamping"></option>
+            <option value="lavanderia"></option>
+            <option value="restaurantes campestres"></option>
+            <option value="hoteles campestres"></option>
+            <option value="veterinaria"></option>
+            <option value="hotel"></option>
+            <option value="restaurante"></option>
+          </datalist>
 
           <label for="prospect-country">Pais</label>
           <input id="prospect-country" name="pais" value="Colombia" autocomplete="country-name" required>
 
-          <label for="prospect-city">Ciudad o departamento</label>
-          <input id="prospect-city" name="ciudad" value="Bogota" placeholder="Bogota, Medellin, Boyaca..." autocomplete="address-level2" required>
+          <label for="prospect-region">Departamento</label>
+          <input id="prospect-region" name="departamento" placeholder="Cundinamarca, Antioquia, Boyaca..." autocomplete="address-level1">
+
+          <label for="prospect-city">Ciudad</label>
+          <input id="prospect-city" name="ciudad" value="Bogota" placeholder="Bogota, Medellin, Tunja..." autocomplete="address-level2">
 
           <label for="prospect-limit">Limite</label>
           <select id="prospect-limit" name="limite">
-            <option value="10">10 negocios</option>
-            <option value="25">25 negocios</option>
             <option value="50" selected>50 negocios</option>
+            <option value="100">100 negocios</option>
+            <option value="150">150 negocios</option>
+            <option value="200">200 negocios</option>
           </select>
+
+          <fieldset class="prospect-filters">
+            <legend>Filtrar resultados</legend>
+            <label><input type="checkbox" name="soloConTelefono" value="1"> Con telefono</label>
+            <label><input type="checkbox" name="soloConCorreo" value="1"> Con correo</label>
+            <label><input type="checkbox" name="soloConWeb" value="1"> Con pagina web</label>
+          </fieldset>
 
           <button type="submit">Buscar</button>
         </form>
@@ -89,6 +101,11 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="prospect-pagination" aria-label="Paginacion de resultados">
+          <button id="prospect-prev" class="secondary-button" type="button" disabled>Anterior</button>
+          <span id="prospect-page">Pagina 1 de 1</span>
+          <button id="prospect-next" class="secondary-button" type="button" disabled>Siguiente</button>
         </div>
       </section>
     </main>

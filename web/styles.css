@@ -1546,7 +1546,7 @@ select:disabled {
 }
 
 .prospect-form {
-  grid-template-columns: 1.1fr 0.8fr 1.1fr 0.7fr auto;
+  grid-template-columns: 1.1fr 0.8fr 1fr 1fr 0.7fr;
   align-items: end;
   gap: 12px;
 }
@@ -1557,6 +1557,41 @@ select:disabled {
 
 .prospect-form button {
   margin: 0;
+}
+
+.prospect-filters {
+  grid-column: 1 / -2;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  min-height: 48px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+}
+
+.prospect-filters legend {
+  padding: 0 6px;
+  color: var(--leaf-dark);
+  font-weight: 700;
+}
+
+.prospect-filters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.prospect-filters input {
+  width: 18px;
+  min-height: 18px;
+  margin: 0;
+  padding: 0;
 }
 
 .prospect-results-head {
@@ -1630,6 +1665,24 @@ select:disabled {
 .prospect-table a:hover,
 .prospect-table a:focus-visible {
   text-decoration: underline;
+}
+
+.prospect-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.prospect-pagination button {
+  margin: 0;
+  padding: 0 14px;
+}
+
+.prospect-pagination span {
+  color: var(--muted);
+  font-weight: 700;
 }
 
 @media (max-width: 820px) {
@@ -1764,7 +1817,16 @@ select:disabled {
     grid-template-columns: 1fr;
   }
 
+  .prospect-filters {
+    grid-column: auto;
+  }
+
   .prospect-actions button {
     width: 100%;
+  }
+
+  .prospect-pagination {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

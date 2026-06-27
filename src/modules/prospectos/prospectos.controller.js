@@ -10,8 +10,8 @@ export async function buscarProspectos(request, response) {
 
   const query = parseProspectosQuery(request.query || {});
 
-  if (!query.tipo || !query.ciudad) {
-    response.status(400).json({ ok: false, message: "Faltan los parametros obligatorios tipo y ciudad." });
+  if (!query.tipo || (!query.ciudad && !query.departamento)) {
+    response.status(400).json({ ok: false, message: "Faltan los parametros obligatorios tipo y ciudad o departamento." });
     return;
   }
 
@@ -40,8 +40,8 @@ export async function exportarProspectos(request, response) {
 
   const query = parseProspectosQuery(request.query || {});
 
-  if (!query.tipo || !query.ciudad) {
-    response.status(400).json({ ok: false, message: "Faltan los parametros obligatorios tipo y ciudad." });
+  if (!query.tipo || (!query.ciudad && !query.departamento)) {
+    response.status(400).json({ ok: false, message: "Faltan los parametros obligatorios tipo y ciudad o departamento." });
     return;
   }
 

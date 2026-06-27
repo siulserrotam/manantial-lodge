@@ -1,9 +1,11 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
 import {
+  applyProspectoFilters,
   buildAddress,
   buildDedupKey,
   buildOverpassQuery,
+  buildPlaceQuery,
   getBusinessTagFilters,
   normalizeEmail,
   normalizeName,
@@ -12,7 +14,14 @@ import {
   uniqueValues
 } from "./prospectos.utils.js";
 
-const OVERPASS_URL = process.env.OVERPASS_API_URL || "https://overpass-api.de/api/interpreter";
+const DEFAULT_OVERPASS_URLS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.private.coffee/api/interpreter"
+];
+const OVERPASS_URLS = (process.env.OVERPASS_API_URLS || process.env.OVERPASS_API_URL || DEFAULT_OVERPASS_URLS.join(","))
+  .split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
 const NOMINATIM_URL = process.env.NOMINATIM_API_URL || "https://nominatim.openstreetmap.org/search";
 const OVERPASS_TIMEOUT_MS = Number(process.env.OVERPASS_TIMEOUT_MS || 25000);
 const NOMINATIM_TIMEOUT_MS = Number(process.env.PROSPECTOS_GEOCODE_TIMEOUT_MS || 8000);
@@ -24,8 +33,6 @@ export async function buscarNegocios(query) {
   const tagFilters = getBusinessTagFilters(query.tipo);
   const bbox = await resolveSearchBoundingBox(query);
   const overpassQuery = buildOverpassQuery({
-    pais: query.pais,
-    ciudad: query.ciudad,
     tagFilters,
     limite: query.limite,
     bbox
@@ -33,21 +40,7 @@ export async function buscarNegocios(query) {
 
   let elements = [];
 
-  try {
-    const { data } = await axios.post(OVERPASS_URL, new URLSearchParams({ data: overpassQuery }).toString(), {
-      timeout: OVERPASS_TIMEOUT_MS,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-        "User-Agent": process.env.PROSPECTOS_USER_AGENT || DEFAULT_USER_AGENT
-      }
-    });
-    elements = Array.isArray(data?.elements) ? data.elements : [];
-  } catch (error) {
-    const controlledError = new Error(error.message);
-    controlledError.statusCode = 502;
-    controlledError.publicMessage = "Overpass API no respondio correctamente. Intenta de nuevo en unos minutos.";
-    throw controlledError;
-  }
+  elements = await fetchOverpassElements(overpassQuery);
 
   const prospectos = deduplicateProspectos(
     elements
@@ -55,7 +48,32 @@ export async function buscarNegocios(query) {
       .filter((prospecto) => prospecto.nombre)
   ).slice(0, query.limite);
 
-  return enrichWithEmails(prospectos);
+  const enrichedProspectos = await enrichWithEmails(prospectos);
+  return applyProspectoFilters(enrichedProspectos, query).slice(0, query.limite);
+}
+
+async function fetchOverpassElements(overpassQuery) {
+  let lastError;
+
+  for (const overpassUrl of OVERPASS_URLS) {
+    try {
+      const { data } = await axios.post(overpassUrl, new URLSearchParams({ data: overpassQuery }).toString(), {
+        timeout: OVERPASS_TIMEOUT_MS,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+          "User-Agent": process.env.PROSPECTOS_USER_AGENT || DEFAULT_USER_AGENT
+        }
+      });
+      return Array.isArray(data?.elements) ? data.elements : [];
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  const controlledError = new Error(lastError?.message || "Overpass request failed");
+  controlledError.statusCode = 502;
+  controlledError.publicMessage = "Overpass API no respondio correctamente. Intenta de nuevo en unos minutos.";
+  throw controlledError;
 }
 
 async function resolveSearchBoundingBox(query) {
@@ -63,7 +81,7 @@ async function resolveSearchBoundingBox(query) {
     const { data } = await axios.get(NOMINATIM_URL, {
       timeout: NOMINATIM_TIMEOUT_MS,
       params: {
-        q: `${query.ciudad}, ${query.pais}`,
+        q: buildPlaceQuery(query),
         format: "jsonv2",
         limit: 1,
         addressdetails: 1
@@ -104,12 +122,13 @@ function normalizeOverpassElement(element, query) {
   const latitud = parseCoordinate(element.lat || center.lat);
   const longitud = parseCoordinate(element.lon || center.lon);
   const website = normalizeWebsite(tags.website || tags["contact:website"] || tags.url);
-  const ciudad = tags["addr:city"] || query.ciudad;
+  const ciudad = tags["addr:city"] || query.ciudad || query.departamento;
 
   return {
     nombre: normalizeName(tags.name || tags["official_name"] || ""),
     tipo: query.tipo,
     pais: query.pais,
+    departamento: query.departamento,
     ciudad,
     direccion: buildAddress(tags),
     telefono: tags.phone || tags["contact:phone"] || tags.mobile || tags["contact:mobile"] || "",

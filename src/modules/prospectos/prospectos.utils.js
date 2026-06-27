@@ -1,12 +1,19 @@
 const DEFAULT_LIMIT = 50;
-const MAX_LIMIT = 50;
+const MAX_LIMIT = 200;
 
 const BUSINESS_TAGS = [
   { aliases: ["restaurante", "restaurantes", "restaurante campestre", "restaurantes campestres"], filters: [{ key: "amenity", value: "restaurant" }] },
   { aliases: ["hotel", "hoteles", "hotel campestre", "hoteles campestres"], filters: [{ key: "tourism", value: "hotel" }, { key: "tourism", value: "guest_house" }] },
   { aliases: ["glamping", "camping", "campamento"], filters: [{ key: "tourism", value: "camp_site" }, { key: "tourism", value: "guest_house" }] },
-  { aliases: ["lavanderia", "lavanderias", "lavandería", "lavanderías"], filters: [{ key: "shop", value: "laundry" }] },
-  { aliases: ["veterinaria", "veterinarias", "veterinario"], filters: [{ key: "amenity", value: "veterinary" }] }
+  { aliases: ["lavanderia", "lavanderias"], filters: [{ key: "shop", value: "laundry" }] },
+  { aliases: ["veterinaria", "veterinarias", "veterinario"], filters: [{ key: "amenity", value: "veterinary" }] },
+  { aliases: ["cafe", "cafes", "cafeteria", "cafeterias"], filters: [{ key: "amenity", value: "cafe" }] },
+  { aliases: ["bar", "bares"], filters: [{ key: "amenity", value: "bar" }] },
+  { aliases: ["spa", "spas"], filters: [{ key: "leisure", value: "spa" }] },
+  { aliases: ["ferreteria", "ferreterias"], filters: [{ key: "shop", value: "hardware" }] },
+  { aliases: ["panaderia", "panaderias"], filters: [{ key: "shop", value: "bakery" }] },
+  { aliases: ["supermercado", "supermercados"], filters: [{ key: "shop", value: "supermarket" }] },
+  { aliases: ["farmacia", "farmacias", "drogueria", "droguerias"], filters: [{ key: "amenity", value: "pharmacy" }, { key: "shop", value: "chemist" }] }
 ];
 
 const ACCENT_VARIANTS = {
@@ -24,7 +31,11 @@ export function parseProspectosQuery(query) {
   return {
     tipo: String(query.tipo || "").trim(),
     pais: String(query.pais || "Colombia").trim(),
+    departamento: String(query.departamento || "").trim(),
     ciudad: String(query.ciudad || "").trim(),
+    soloConTelefono: parseBoolean(query.soloConTelefono),
+    soloConCorreo: parseBoolean(query.soloConCorreo),
+    soloConWeb: parseBoolean(query.soloConWeb),
     limite
   };
 }
@@ -37,32 +48,22 @@ export function getBusinessTagFilters(tipo) {
     return match.filters;
   }
 
-  return [{ key: "name", value: tipo, isRegex: true }];
+  return [
+    { key: "name", value: tipo, isRegex: true, contains: true, elementTypes: ["node"] },
+    { key: "brand", value: tipo, isRegex: true, contains: true, elementTypes: ["node"] },
+    { key: "operator", value: tipo, isRegex: true, contains: true, elementTypes: ["node"] }
+  ];
 }
 
-export function buildOverpassQuery({ pais, ciudad, tagFilters, limite, bbox }) {
-  if (bbox) {
-    const filters = tagFilters.map((filter) => buildOverpassFilter(filter, bbox)).join("\n");
-
-    return `
-[out:json][timeout:25];
-(
-${filters}
-);
-out center ${limite};
-`.trim();
-  }
-
-  const cityRegex = buildNameRegex(ciudad);
-  const filters = tagFilters.map((filter) => buildOverpassFilter(filter)).join("\n");
+export function buildOverpassQuery({ tagFilters, limite, bbox }) {
+  const filters = tagFilters.map((filter) => buildOverpassFilter(filter, bbox)).join("\n");
 
   return `
 [out:json][timeout:25];
-area["name"~"^${cityRegex}$",i]["boundary"="administrative"]->.searchArea;
 (
 ${filters}
 );
-out center ${limite};
+out center qt ${limite};
 `.trim();
 }
 
@@ -123,23 +124,43 @@ export function uniqueValues(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
-export function buildExcelFilename({ tipo, ciudad }) {
+export function buildExcelFilename({ tipo, departamento, ciudad }) {
   const safeType = normalizeText(tipo).replace(/\s+/g, "-") || "prospectos";
-  const safeCity = normalizeText(ciudad).replace(/\s+/g, "-") || "ciudad";
-  return `prospectos-${safeType}-${safeCity}.xlsx`;
+  const safePlace = normalizeText(ciudad || departamento).replace(/\s+/g, "-") || "lugar";
+  return `prospectos-${safeType}-${safePlace}.xlsx`;
+}
+
+export function applyProspectoFilters(prospectos, query) {
+  return prospectos.filter((prospecto) => {
+    if (query.soloConTelefono && !prospecto.telefono) {
+      return false;
+    }
+
+    if (query.soloConWeb && !prospecto.sitio_web) {
+      return false;
+    }
+
+    if (query.soloConCorreo && (!prospecto.correo || prospecto.correo === "Sin correo")) {
+      return false;
+    }
+
+    return true;
+  });
+}
+
+export function buildPlaceQuery({ ciudad, departamento, pais }) {
+  return [ciudad, departamento, pais].filter(Boolean).join(", ");
 }
 
 function buildOverpassFilter(filter, bbox) {
   const operator = filter.isRegex ? "~" : "=";
-  const value = filter.isRegex ? buildNameRegex(filter.value) : escapeOverpassValue(filter.value);
+  const regexValue = filter.contains ? buildContainsRegex(filter.value) : buildNameRegex(filter.value);
+  const value = filter.isRegex ? regexValue : escapeOverpassValue(filter.value);
   const tag = `["${escapeOverpassValue(filter.key)}"${operator}"${value}"${filter.isRegex ? ",i" : ""}]`;
-  const areaOrBbox = bbox ? `(${bbox.south},${bbox.west},${bbox.north},${bbox.east})` : "(area.searchArea)";
+  const areaOrBbox = bbox ? `(${bbox.south},${bbox.west},${bbox.north},${bbox.east})` : "";
 
-  return [
-    `  node${tag}${areaOrBbox};`,
-    `  way${tag}${areaOrBbox};`,
-    `  relation${tag}${areaOrBbox};`
-  ].join("\n");
+  const elementTypes = filter.elementTypes || ["node", "way", "relation"];
+  return elementTypes.map((type) => `  ${type}${tag}${areaOrBbox};`).join("\n");
 }
 
 function buildNameRegex(value) {
@@ -147,6 +168,10 @@ function buildNameRegex(value) {
     .split("")
     .map((char) => ACCENT_VARIANTS[char.toLowerCase()] || char)
     .join("");
+}
+
+function buildContainsRegex(value) {
+  return buildNameRegex(value).replace(/\s+/g, ".*");
 }
 
 function normalizeText(value) {
@@ -167,4 +192,8 @@ function escapeRegex(value) {
 
 function escapeOverpassValue(value) {
   return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function parseBoolean(value) {
+  return ["1", "true", "si", "sí", "on", "yes"].includes(normalizeText(value));
 }

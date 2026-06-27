@@ -64,7 +64,7 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 
 ## Modulo de prospectos
 
-El modulo de prospectos busca negocios por tipo, pais y ciudad usando OpenStreetMap a traves de Overpass API. No usa Google Places ni servicios pagos.
+El modulo de prospectos busca negocios por tipo, pais, departamento y ciudad usando OpenStreetMap a traves de Overpass API. No usa Google Places ni servicios pagos.
 
 ### Instalar dependencias
 
@@ -84,6 +84,7 @@ xlsx     Exportacion de resultados a Excel
 
 ```text
 OVERPASS_API_URL=https://overpass-api.de/api/interpreter
+OVERPASS_API_URLS=https://overpass-api.de/api/interpreter,https://overpass.private.coffee/api/interpreter
 NOMINATIM_API_URL=https://nominatim.openstreetmap.org/search
 OVERPASS_TIMEOUT_MS=25000
 PROSPECTOS_GEOCODE_TIMEOUT_MS=8000
@@ -91,7 +92,7 @@ PROSPECTOS_EMAIL_TIMEOUT_MS=6000
 PROSPECTOS_USER_AGENT=StudioManantialProspectos/1.0 (contacto@manantiallodge.com)
 ```
 
-Si no se configuran, el modulo usa valores por defecto conservadores. Primero ubica la ciudad o departamento con Nominatim de OpenStreetMap para consultar Overpass por bbox, evitando areas enormes. Las busquedas se limitan a maximo 50 resultados para respetar el uso de Overpass.
+Si no se configuran, el modulo usa valores por defecto conservadores. Primero ubica la ciudad o departamento con Nominatim de OpenStreetMap para consultar Overpass por bbox, evitando areas enormes. Las busquedas se limitan a maximo 200 resultados para respetar el uso de Overpass. `OVERPASS_API_URLS` permite rotar endpoints publicos separados por coma.
 
 ### Ejemplos de uso
 
@@ -100,14 +101,15 @@ Buscar negocios:
 ```text
 GET /api/prospectos/buscar?tipo=glamping&pais=Colombia&ciudad=Bogota
 GET /api/prospectos/buscar?tipo=lavanderia&pais=Colombia&ciudad=Medellin
-GET /api/prospectos/buscar?tipo=restaurantes%20campestres&pais=Colombia&ciudad=Cundinamarca
-GET /api/prospectos/buscar?tipo=hoteles%20campestres&pais=Colombia&ciudad=Boyaca
+GET /api/prospectos/buscar?tipo=cafe&pais=Colombia&departamento=Antioquia&ciudad=Medellin&limite=200
+GET /api/prospectos/buscar?tipo=hoteles%20campestres&pais=Colombia&departamento=Boyaca&soloConWeb=1
+GET /api/prospectos/buscar?tipo=lavanderia&pais=Colombia&departamento=Antioquia&ciudad=Medellin&soloConTelefono=1
 ```
 
 Exportar a Excel:
 
 ```text
-GET /api/prospectos/exportar?tipo=glamping&pais=Colombia&ciudad=Bogota
+GET /api/prospectos/exportar?tipo=glamping&pais=Colombia&departamento=Cundinamarca&ciudad=Bogota
 ```
 
 Respuesta JSON esperada en busqueda:
@@ -116,12 +118,13 @@ Respuesta JSON esperada en busqueda:
 {
   "ok": true,
   "total": 1,
-  "limite": 50,
+  "limite": 200,
   "prospectos": [
     {
       "nombre": "Nombre del negocio",
       "tipo": "glamping",
       "pais": "Colombia",
+      "departamento": "Cundinamarca",
       "ciudad": "Bogota",
       "direccion": "Direccion si existe",
       "telefono": "",
@@ -137,6 +140,8 @@ Respuesta JSON esperada en busqueda:
 ```
 
 Si el negocio tiene sitio web, el modulo intenta encontrar correos en la pagina principal y en `/contacto`, `/contact` y `/reservas`. Si no encuentra correo, retorna `Sin correo`; si el negocio no tiene web, deja el campo vacio.
+
+La pagina `/prospectos.html` permite digitar cualquier tipologia, escoger pais/departamento/ciudad, filtrar por resultados con telefono, correo o pagina web, ver resultados paginados de 20 en 20 y descargar CSV o Excel.
 
 ### Agregar nuevos tipos de negocio
 
