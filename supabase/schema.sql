@@ -101,6 +101,21 @@ create table if not exists public.cargos_cuenta (
   creado_en timestamptz not null default now()
 );
 
+create table if not exists public.synkro_leads (
+  id uuid primary key default gen_random_uuid(),
+  nombre text not null,
+  email text not null,
+  celular text not null,
+  empresa text,
+  ecommerce text,
+  erp text,
+  pedidos_mes integer not null default 0,
+  mensaje text,
+  origen text not null default 'synkro_landing',
+  estado text not null default 'nuevo',
+  creado_en timestamptz not null default now()
+);
+
 insert into public.inventario (nombre, categoria, unidad, cantidad, valor_compra)
 values
   ('Carne para sancocho', 'comida', 'porcion', 20, 0),

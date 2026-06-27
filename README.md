@@ -60,6 +60,8 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 /api/reservas      Crear reservas publicas
 /api/prospectos/buscar    Busca prospectos desde OpenStreetMap/Overpass
 /api/prospectos/exportar  Exporta prospectos a Excel
+/synkro.html       Landing inicial de Synkro
+/api/synkro/leads  Captura leads de Synkro
 ```
 
 ## Modulo de prospectos
@@ -155,6 +157,44 @@ Edita `src/modules/prospectos/prospectos.utils.js` y agrega una entrada en `BUSI
 ```
 
 Cada filtro se consulta para nodos, ways y relations dentro del area indicada.
+
+## Subproyecto Synkro
+
+Synkro es una validacion inicial para un producto SaaS B2B que conectara tiendas online con ERPs contables. En esta primera fase dentro de este repositorio solo se implementa la entrada comercial:
+
+```text
+synkro.manantiallodge.com -> /web/synkro.html
+/synkro.html              -> landing local/manual
+/api/synkro/leads         -> captura de leads en Supabase
+```
+
+La landing incluye:
+
+```text
+Propuesta de valor
+Calculadora ROI
+Flujo conceptual e-commerce -> Synkro -> ERP
+Formulario de validacion comercial
+```
+
+Para guardar leads en Supabase, ejecuta el bloque de `synkro_leads` incluido en `supabase/schema.sql` o vuelve a correr el schema completo en un entorno controlado.
+
+Variables necesarias ya existentes:
+
+```text
+SUPABASE_URL
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+DNS/Vercel:
+
+```text
+1. Agregar el dominio synkro.manantiallodge.com al proyecto en Vercel.
+2. Configurar el CNAME o registro recomendado por Vercel en el proveedor DNS.
+3. Confirmar que el deployment de produccion usa la rama produccion.
+```
+
+Esta fase no incluye todavia la plataforma .NET, multi-tenancy, conectores Shopify/WooCommerce/Siigo, RabbitMQ ni panel privado. Esos puntos quedan para fases posteriores cuando la validacion comercial tenga leads reales.
 
 ## Nota sobre Delphi
 

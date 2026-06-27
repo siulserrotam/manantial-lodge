@@ -1685,6 +1685,221 @@ select:disabled {
   font-weight: 700;
 }
 
+.synkro-shell {
+  min-height: 100vh;
+  background: #f4f7f8;
+  color: #172026;
+}
+
+.synkro-hero {
+  min-height: 86vh;
+  display: grid;
+  align-content: space-between;
+  padding: 28px clamp(18px, 5vw, 76px) 72px;
+  color: white;
+  background:
+    linear-gradient(90deg, rgba(9, 26, 34, 0.9), rgba(9, 26, 34, 0.5)),
+    url("https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=80") center/cover;
+}
+
+.synkro-nav,
+.synkro-hero-copy,
+.synkro-section {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.synkro-nav,
+.synkro-nav div,
+.synkro-brand,
+.synkro-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.synkro-nav {
+  justify-content: space-between;
+}
+
+.synkro-brand,
+.synkro-nav a,
+.synkro-actions .secondary-link {
+  color: white;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.synkro-brand span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: #28d6b0;
+  color: #09212c;
+}
+
+.synkro-hero-copy {
+  padding-top: clamp(90px, 16vw, 180px);
+}
+
+.synkro-kicker {
+  margin: 0 0 14px;
+  color: #28d6b0;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.synkro-hero h1 {
+  margin: 0;
+  font-size: clamp(4rem, 11vw, 8rem);
+  line-height: 0.9;
+}
+
+.synkro-hero p {
+  max-width: 720px;
+  margin: 20px 0 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.55;
+}
+
+.synkro-actions {
+  margin-top: 30px;
+}
+
+.synkro-section {
+  padding: clamp(48px, 7vw, 86px) clamp(18px, 4vw, 42px);
+}
+
+.synkro-section h2 {
+  max-width: 820px;
+  margin: 0 0 26px;
+  color: #10232c;
+  font-size: clamp(2rem, 4.4vw, 4rem);
+  line-height: 1;
+}
+
+.synkro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.synkro-grid article,
+.synkro-roi-tool,
+.synkro-form {
+  padding: 26px;
+  border: 1px solid #d7e1e2;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 16px 42px rgba(22, 36, 43, 0.08);
+}
+
+.synkro-grid article span,
+.synkro-metrics span {
+  color: #0d7c72;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.synkro-grid h3,
+.synkro-grid p {
+  margin-top: 0;
+}
+
+.synkro-grid p,
+.synkro-contact p {
+  color: #5f6e73;
+  line-height: 1.6;
+}
+
+.synkro-roi {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.synkro-roi-tool {
+  display: grid;
+  gap: 14px;
+}
+
+.synkro-roi-tool input[type="range"] {
+  padding: 0;
+  accent-color: #0d7c72;
+}
+
+.synkro-roi-tool output {
+  color: #10232c;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.synkro-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.synkro-metrics article {
+  min-height: 130px;
+  display: grid;
+  align-content: space-between;
+  padding: 18px;
+  border-radius: 8px;
+  background: #eef7f6;
+}
+
+.synkro-metrics strong {
+  color: #10232c;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+}
+
+.synkro-flow {
+  border-top: 1px solid #d7e1e2;
+  border-bottom: 1px solid #d7e1e2;
+  background: #eaf1f2;
+}
+
+.synkro-contact {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1.15fr);
+  gap: 28px;
+}
+
+.synkro-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.synkro-form label,
+.synkro-form textarea,
+.synkro-form button,
+.synkro-form .message {
+  grid-column: 1 / -1;
+}
+
+.synkro-form label:nth-of-type(1),
+.synkro-form input:nth-of-type(1),
+.synkro-form label:nth-of-type(2),
+.synkro-form input:nth-of-type(2),
+.synkro-form label:nth-of-type(3),
+.synkro-form input:nth-of-type(3),
+.synkro-form label:nth-of-type(4),
+.synkro-form input:nth-of-type(4),
+.synkro-form label:nth-of-type(5),
+.synkro-form select:nth-of-type(1),
+.synkro-form label:nth-of-type(6),
+.synkro-form select:nth-of-type(2) {
+  grid-column: auto;
+}
+
 @media (max-width: 820px) {
   .page-shell {
     grid-template-columns: 1fr;
@@ -1828,5 +2043,37 @@ select:disabled {
   .prospect-pagination {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .synkro-hero {
+    min-height: auto;
+  }
+
+  .synkro-nav,
+  .synkro-contact {
+    align-items: flex-start;
+  }
+
+  .synkro-grid,
+  .synkro-roi,
+  .synkro-contact,
+  .synkro-metrics,
+  .synkro-form {
+    grid-template-columns: 1fr;
+  }
+
+  .synkro-form label:nth-of-type(1),
+  .synkro-form input:nth-of-type(1),
+  .synkro-form label:nth-of-type(2),
+  .synkro-form input:nth-of-type(2),
+  .synkro-form label:nth-of-type(3),
+  .synkro-form input:nth-of-type(3),
+  .synkro-form label:nth-of-type(4),
+  .synkro-form input:nth-of-type(4),
+  .synkro-form label:nth-of-type(5),
+  .synkro-form select:nth-of-type(1),
+  .synkro-form label:nth-of-type(6),
+  .synkro-form select:nth-of-type(2) {
+    grid-column: 1 / -1;
   }
 }

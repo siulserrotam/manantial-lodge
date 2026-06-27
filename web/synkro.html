@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Synkro | E-commerce y ERP en perfecto orden</title>
+    <meta name="description" content="Synkro conecta tiendas online con ERPs contables para reducir digitacion manual, errores de facturacion e inventarios descuadrados.">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="synkro-shell">
+      <section class="synkro-hero" aria-labelledby="synkro-title">
+        <nav class="synkro-nav" aria-label="Navegacion Synkro">
+          <a class="synkro-brand" href="https://synkro.manantiallodge.com" aria-label="Synkro inicio">
+            <span>S</span>
+            <strong>Synkro</strong>
+          </a>
+          <div>
+            <a href="#roi">ROI</a>
+            <a href="#flujo">Flujo</a>
+            <a href="#contacto">Validar demo</a>
+          </div>
+        </nav>
+
+        <div class="synkro-hero-copy">
+          <p class="synkro-kicker">E-commerce + ERP</p>
+          <h1 id="synkro-title">Synkro</h1>
+          <p>Tu e-commerce y tu ERP, en perfecto orden. Automatiza el paso de pedidos web hacia facturacion, inventario y contabilidad sin digitacion manual.</p>
+          <div class="synkro-actions">
+            <a class="button-link" href="#contacto">Validar mi caso</a>
+            <a class="secondary-link" href="#roi">Calcular ahorro</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="synkro-section synkro-proof" aria-labelledby="problem-title">
+        <div>
+          <p class="synkro-kicker">Problema</p>
+          <h2 id="problem-title">Cuando las ventas crecen, la digitacion manual se vuelve costosa.</h2>
+        </div>
+        <div class="synkro-grid">
+          <article>
+            <span>01</span>
+            <h3>Facturas rechazadas</h3>
+            <p>Errores en cedulas, NIT, impuestos o datos del cliente pueden frenar la operacion contable.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Inventario descuadrado</h3>
+            <p>La tienda vende por un lado y el ERP se actualiza tarde, generando sobreventas y reclamos.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Nomina operativa</h3>
+            <p>Un auxiliar digitando pedidos todos los dias puede costar mas que automatizar el proceso.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="roi" class="synkro-section synkro-roi" aria-labelledby="roi-title">
+        <div>
+          <p class="synkro-kicker">Calculadora ROI</p>
+          <h2 id="roi-title">Estima el ahorro mensual por automatizar pedidos.</h2>
+          <p class="muted">Modelo inicial basado en costo operativo mensual estimado de un auxiliar contable y tiempo promedio de digitacion por pedido.</p>
+        </div>
+        <div class="synkro-roi-tool">
+          <label for="orders-range">Pedidos manuales al mes</label>
+          <input id="orders-range" type="range" min="50" max="3000" step="50" value="600">
+          <output id="orders-output" for="orders-range">600 pedidos</output>
+          <div class="synkro-metrics">
+            <article>
+              <span>Ahorro mensual estimado</span>
+              <strong id="money-output">$0</strong>
+            </article>
+            <article>
+              <span>Horas operativas liberadas</span>
+              <strong id="hours-output">0 h</strong>
+            </article>
+            <article>
+              <span>Costo manual por pedido</span>
+              <strong id="cost-output">$0</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="flujo" class="synkro-section synkro-flow" aria-labelledby="flow-title">
+        <p class="synkro-kicker">Fase 1 de producto</p>
+        <h2 id="flow-title">Primero validamos el dolor real antes de construir toda la plataforma.</h2>
+        <div class="synkro-grid">
+          <article>
+            <span>Shopify / WooCommerce</span>
+            <h3>Pedido recibido</h3>
+            <p>Identificamos la tienda, volumen mensual, ERP actual y errores repetitivos del proceso manual.</p>
+          </article>
+          <article>
+            <span>Synkro</span>
+            <h3>Traduccion de datos</h3>
+            <p>El MVP futuro transformara pedidos en documentos contables listos para el ERP.</p>
+          </article>
+          <article>
+            <span>Siigo / ERP</span>
+            <h3>Registro contable</h3>
+            <p>La meta es reducir reprocesos, rechazos e inventarios descuadrados con trazabilidad.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="contacto" class="synkro-section synkro-contact" aria-labelledby="contact-title">
+        <div>
+          <p class="synkro-kicker">Validacion privada</p>
+          <h2 id="contact-title">Cuéntanos tu flujo actual y validamos si Synkro puede ayudarte.</h2>
+          <p>Esta primera fase busca aprender de empresas reales antes de construir conectores completos.</p>
+        </div>
+        <form id="synkro-lead-form" class="synkro-form">
+          <label for="lead-name">Nombre</label>
+          <input id="lead-name" name="nombre" autocomplete="name" required>
+
+          <label for="lead-email">Correo</label>
+          <input id="lead-email" name="email" type="email" autocomplete="email" required>
+
+          <label for="lead-phone">Celular</label>
+          <input id="lead-phone" name="celular" autocomplete="tel" required>
+
+          <label for="lead-company">Empresa</label>
+          <input id="lead-company" name="empresa" autocomplete="organization">
+
+          <label for="lead-ecommerce">Plataforma e-commerce</label>
+          <select id="lead-ecommerce" name="ecommerce">
+            <option value="">Seleccionar</option>
+            <option>Shopify</option>
+            <option>WooCommerce</option>
+            <option>Mercado Shops</option>
+            <option>Otra</option>
+          </select>
+
+          <label for="lead-erp">ERP o sistema contable</label>
+          <select id="lead-erp" name="erp">
+            <option value="">Seleccionar</option>
+            <option>Siigo Colombia</option>
+            <option>Siigo Ecuador</option>
+            <option>Contifico</option>
+            <option>Alegra</option>
+            <option>World Office</option>
+            <option>Otro</option>
+          </select>
+
+          <label for="lead-message">Mensaje</label>
+          <textarea id="lead-message" name="mensaje" placeholder="Cuantos pedidos procesan, que errores se repiten o que ERP usan hoy."></textarea>
+
+          <input id="lead-orders" name="pedidosMes" type="hidden" value="600">
+          <button type="submit">Solicitar validacion</button>
+          <p id="synkro-message" class="message" role="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="synkro.js"></script>
+  </body>
+</html>
