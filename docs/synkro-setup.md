@@ -137,14 +137,14 @@ Header: x-synkro-api-key: synkro_demo_api_key
 Internal sync attempts:
 
 ```text
-GET https://studios.manantiallodge.com/api/synkro/sync-attempts
+GET https://studios.manantiallodge.com/api/synkro/internal?resource=sync-attempts
 Header: Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
 ```
 
 Internal audit logs:
 
 ```text
-GET https://studios.manantiallodge.com/api/synkro/audit-logs?externalOrderId=<order_uuid>
+GET https://studios.manantiallodge.com/api/synkro/internal?resource=audit-logs&externalOrderId=<order_uuid>
 Header: Authorization: Bearer <SYNKRO_ADMIN_TOKEN>
 ```
 
@@ -160,9 +160,8 @@ web/synkro/sync.js
 web/synkro/styles.css
 api/synkro/leads.js
 api/synkro/_security.js
-api/synkro/audit-logs.js
+api/synkro/internal.js
 api/synkro/orders.js
-api/synkro/sync-attempts.js
 docs/synkro-phases.md
 docs/synkro-setup.md
 docs/synkro-mvp-api.md

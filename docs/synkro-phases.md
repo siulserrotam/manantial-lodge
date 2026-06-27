@@ -45,7 +45,7 @@ Synkro validates and then builds a B2B SaaS that connects online stores with acc
 - Sync attempt model with `synkro_sync_attempts`.
 - Audit log model with `synkro_audit_logs`.
 - Simulated order webhook: `POST /api/synkro/webhooks/orders`.
-- Internal sync attempts endpoint: `GET /api/synkro/sync-attempts`.
+- Internal sync attempts endpoint: `GET /api/synkro/internal?resource=sync-attempts`.
 - Idempotency by tenant plus platform plus external order ID.
 - Documentation in `docs/synkro-mvp-api.md`.
 
@@ -54,7 +54,7 @@ Synkro validates and then builds a B2B SaaS that connects online stores with acc
 - Internal page `web/synkro/sync.html`.
 - Compatibility URL `/synkro-sync.html`.
 - Internal navigation between leads and sync attempts.
-- Protected audit endpoint `GET /api/synkro/audit-logs`.
+- Protected audit endpoint `GET /api/synkro/internal?resource=audit-logs`.
 - Sync dashboard filters by status, platform, and date.
 - Metrics for queued, processing, success, and failed attempts.
 - JSON detail view for normalized order payloads.

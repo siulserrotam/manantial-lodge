@@ -34,7 +34,8 @@ function buildAttemptsUrl() {
     params.set("status", statusFilter.value);
   }
   params.set("limit", "200");
-  return `/api/synkro/sync-attempts?${params.toString()}`;
+  params.set("resource", "sync-attempts");
+  return `/api/synkro/internal?${params.toString()}`;
 }
 
 // ES: Carga los intentos tecnicos protegidos por token administrativo.
@@ -170,7 +171,7 @@ async function showLogs(card) {
   detailDialog.showModal();
 
   try {
-    const response = await fetch(`/api/synkro/audit-logs?externalOrderId=${encodeURIComponent(orderId)}&limit=50`, {
+    const response = await fetch(`/api/synkro/internal?resource=audit-logs&externalOrderId=${encodeURIComponent(orderId)}&limit=50`, {
       headers: authHeaders()
     });
     const result = await response.json();

@@ -85,7 +85,7 @@ If the same `platform + externalOrderId` is sent again for the same tenant, Synk
 ## Internal sync attempts endpoint
 
 ```text
-GET /api/synkro/sync-attempts
+GET /api/synkro/internal?resource=sync-attempts
 ```
 
 Required header:
@@ -105,7 +105,7 @@ limit=50
 ## Internal audit logs endpoint
 
 ```text
-GET /api/synkro/audit-logs?externalOrderId=<order_uuid>
+GET /api/synkro/internal?resource=audit-logs&externalOrderId=<order_uuid>
 ```
 
 Required header:

@@ -68,8 +68,7 @@ values ('admin', '12345678', '0000', 'Administrador', '', '', 'administrador');
 /synkro-leads.html Panel interno de seguimiento Synkro
 /api/synkro/webhooks/orders  Webhook sandbox de ordenes Synkro
 /api/synkro/orders           Funcion interna compatible del webhook
-/api/synkro/sync-attempts    Consulta interna de intentos Synkro
-/api/synkro/audit-logs       Consulta interna de auditoria Synkro
+/api/synkro/internal         Consulta interna de intentos y auditoria Synkro
 /synkro-sync.html            Tablero interno de sincronizaciones Synkro
 ```
 
@@ -261,7 +260,7 @@ La quinta fase agrega el tablero interno de sincronizaciones:
 
 ```text
 /synkro-sync.html
-GET /api/synkro/audit-logs
+GET /api/synkro/internal?resource=audit-logs
 filtros por estado, plataforma y fecha
 detalle JSON de orden recibida
 auditoria por orden
